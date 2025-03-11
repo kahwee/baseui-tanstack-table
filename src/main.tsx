@@ -14,9 +14,12 @@ const App = () => {
       <BaseProvider theme={LightTheme}>
         <div style={{ padding: '20px' }}>
           <h1>BaseUI Data Table Example</h1>
+          <p>Type in the search box to filter the table by first or last name.</p>
           <DataTable 
             data={samplePersonData} 
             columns={samplePersonColumns}
+            searchPlaceholder="Search by name..."
+            searchFields={['firstName', 'lastName']}
           />
         </div>
       </BaseProvider>

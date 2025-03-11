@@ -51,3 +51,20 @@ export const InitialSorting: Story = {
     initialSorting: [{ id: 'age', desc: true }],
   },
 };
+
+export const WithSearch: Story = {
+  args: {
+    data: samplePersonData,
+    columns: samplePersonColumns,
+    searchPlaceholder: 'Search by name...',
+    searchFields: ['firstName', 'lastName'],
+  },
+};
+
+export const WithoutSearch: Story = {
+  args: {
+    data: samplePersonData,
+    columns: samplePersonColumns,
+    showSearchBar: false,
+  },
+};

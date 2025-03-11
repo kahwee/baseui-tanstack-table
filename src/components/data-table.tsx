@@ -3,7 +3,9 @@ import {
   useReactTable,
   getCoreRowModel,
   getSortedRowModel,
+  getFilteredRowModel,
   SortingState,
+  ColumnFiltersState,
   flexRender,
   ColumnDef,
 } from '@tanstack/react-table';
@@ -23,6 +25,9 @@ import {
   StyledTableEmptyMessage,
   StyledTableLoadingMessage,
 } from 'baseui/table-semantic';
+import { Input } from 'baseui/input';
+import { Search } from 'baseui/icon';
+import { Block } from 'baseui/block';
 
 export interface DataTableProps<T extends object> {
   data: T[];
@@ -30,6 +35,9 @@ export interface DataTableProps<T extends object> {
   isLoading?: boolean;
   emptyMessage?: string;
   initialSorting?: SortingState;
+  searchPlaceholder?: string;
+  searchFields?: string[];
+  showSearchBar?: boolean;
 }
 
 export function DataTable<T extends object>({
@@ -38,22 +46,66 @@ export function DataTable<T extends object>({
   isLoading = false,
   emptyMessage = 'No data available',
   initialSorting = [],
+  searchPlaceholder = 'Search...',
+  searchFields = ['firstName', 'lastName'],
+  showSearchBar = true,
 }: DataTableProps<T>) {
   const [sorting, setSorting] = React.useState<SortingState>(initialSorting);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [globalFilter, setGlobalFilter] = React.useState('');
+
+  // Create a custom global filter function that searches multiple fields
+  const customGlobalFilterFn = React.useCallback(
+    (row: any, _columnId: string, filterValue: string) => {
+      const searchTerm = filterValue.toLowerCase();
+      
+      // Search across specified fields
+      return searchFields.some(field => {
+        const value = row.getValue(field);
+        return value && String(value).toLowerCase().includes(searchTerm);
+      });
+    },
+    [searchFields]
+  );
 
   const table = useReactTable({
     data,
     columns,
     state: {
       sorting,
+      columnFilters,
+      globalFilter,
     },
     onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters, 
+    onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: customGlobalFilterFn,
   });
 
   return (
     <StyledRoot>
+      {showSearchBar && (
+        <Block marginBottom="16px">
+          <Input
+            value={globalFilter || ''}
+            onChange={e => setGlobalFilter(e.currentTarget.value)}
+            placeholder={searchPlaceholder}
+            clearable
+            startEnhancer={<Search size={18} />}
+            overrides={{
+              Root: {
+                style: {
+                  width: '100%',
+                  maxWidth: '300px',
+                }
+              }
+            }}
+          />
+        </Block>
+      )}
       <StyledTable>
         <StyledTableHead>
           {table.getHeaderGroups().map((headerGroup) => (
