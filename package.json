@@ -2,8 +2,16 @@
   "name": "baseui-tanstack-table",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "type": "module",
+  "main": "dist/baseui-tanstack-table.umd.js",
+  "module": "dist/baseui-tanstack-table.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
@@ -17,7 +25,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/kahwee/baseui-tanstack-table/issues"
   },
@@ -32,13 +39,14 @@
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^8.6.4",
-    "@storybook/builder-webpack5": "^8.6.4",
-    "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/react": "^8.6.4",
+    "@storybook/react-vite": "^8.6.4",
+    "@types/node": "^22.13.10",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "@typescript-eslint/parser": "^8.26.1",
+    "@vitejs/plugin-react-swc": "^3.8.0",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.3",
@@ -46,6 +54,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "prettier": "^3.5.3",
     "storybook": "^8.6.4",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "vite": "^6.2.1"
   }
 }

@@ -1,4 +1,4 @@
-name: Lint
+name: Lint and Build
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  lint:
+  lint-and-build:
     runs-on: ubuntu-latest
     
     steps:
@@ -28,3 +28,6 @@ jobs:
         
       - name: TypeScript Check
         run: npx tsc --noEmit
+        
+      - name: Build with Vite
+        run: npm run build
