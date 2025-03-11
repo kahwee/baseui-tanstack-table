@@ -11,6 +11,7 @@ A React component that integrates [Base Web UI](https://baseweb.design/) semanti
 - Fully styled with Base Web UI components
 - Flexible and powerful data manipulation with TanStack Table
 - Sortable columns with appropriate UI indicators
+- Real-time search filtering across multiple fields
 - Loading and empty state handling
 - Responsive design
 
@@ -67,6 +68,23 @@ function ExampleTable() {
 }
 ```
 
+### With Search Functionality
+
+```tsx
+import { DataTable } from 'baseui-data-table';
+
+function SearchableTable() {
+  return (
+    <DataTable 
+      data={samplePersonData} 
+      columns={samplePersonColumns} 
+      searchPlaceholder="Search by name..."
+      searchFields={['firstName', 'lastName']}
+    />
+  );
+}
+```
+
 ### Advanced Usage
 
 ```tsx
@@ -117,6 +135,9 @@ function MyTable() {
       isLoading={isLoading}
       emptyMessage="No users found"
       initialSorting={[{ id: 'name', desc: false }]}
+      searchPlaceholder="Search users..."
+      searchFields={['name', 'email']}
+      showSearchBar={true}
     />
   );
 }
