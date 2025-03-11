@@ -31,18 +31,20 @@ import { Input } from 'baseui/input';
 import { Search } from 'baseui/icon';
 import { Block } from 'baseui/block';
 
+// Define the props for the DataTable component
 export interface DataTableProps<T extends object> {
-  data: T[];
+  data: T[]; // Array of data objects
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  columns: ColumnDef<T, any>[];
-  isLoading?: boolean;
-  emptyMessage?: string;
-  initialSorting?: SortingState;
-  searchPlaceholder?: string;
-  searchFields?: string[];
-  showSearchBar?: boolean;
+  columns: ColumnDef<T, any>[]; // Array of column definitions
+  isLoading?: boolean; // Optional loading state
+  emptyMessage?: string; // Optional message when no data is available
+  initialSorting?: SortingState; // Optional initial sorting state
+  searchPlaceholder?: string; // Optional placeholder for the search input
+  searchFields?: string[]; // Optional array of fields to search
+  showSearchBar?: boolean; // Optional flag to show/hide the search bar
 }
 
+// DataTable component definition
 export function DataTable<T extends object>({
   data,
   columns,
@@ -53,6 +55,7 @@ export function DataTable<T extends object>({
   searchFields = ['firstName', 'lastName'],
   showSearchBar = true,
 }: DataTableProps<T>) {
+  // State for sorting, column filters, and global filter
   const [sorting, setSorting] = React.useState<SortingState>(initialSorting);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = React.useState('');
@@ -71,6 +74,7 @@ export function DataTable<T extends object>({
     [searchFields],
   );
 
+  // Initialize the table instance using useReactTable hook
   const table = useReactTable({
     data,
     columns,
@@ -123,9 +127,9 @@ export function DataTable<T extends object>({
                     {flexRender(header.column.columnDef.header, header.getContext())}
                     {isSortable && (
                       <StyledSortIconContainer>
-                        {sortDirection === false && <StyledSortNoneIcon />}
-                        {sortDirection === 'asc' && <StyledSortAscIcon />}
-                        {sortDirection === 'desc' && <StyledSortDescIcon />}
+                        {sortDirection === false && <StyledSortNoneIcon size="16px" aria-hidden="true" role="presentation"  />}
+                        {sortDirection === 'asc' && <StyledSortAscIcon size="16px" aria-hidden="true" role="presentation"  />}
+                        {sortDirection === 'desc' && <StyledSortDescIcon size="16px" aria-hidden="true" role="presentation" />}
                       </StyledSortIconContainer>
                     )}
                   </HeadCell>
