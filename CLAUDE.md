@@ -2,8 +2,11 @@
 
 ## Commands
 - Setup: `npm install --legacy-peer-deps`
+- Development: `npm run dev` (Vite dev server)
+- Build: `npm run build` (TypeScript + Vite build)
 - Storybook: `npm run storybook` or `npx storybook dev -p 6006`
 - Build Storybook: `npm run build-storybook` or `npx storybook build`
+- Storybook Info: Running Storybook v8 with react-vite framework
 - TypeCheck: `npx tsc --noEmit`
 - Lint: `npm run lint`
 - Lint & Fix: `npm run lint:fix`

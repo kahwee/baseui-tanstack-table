@@ -23,5 +23,8 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
         
+      - name: Install Storybook Framework
+        run: npm install --legacy-peer-deps -D @storybook/react-vite
+        
       - name: Build Storybook
         run: npx storybook build

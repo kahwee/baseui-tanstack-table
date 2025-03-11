@@ -1,6 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { TanStackTable } from './tan-stack-table';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Client as Styletron } from 'styletron-engine-atomic';
+import { Provider as StyletronProvider } from 'styletron-react';
+import { LightTheme, BaseProvider } from 'baseui';
+import { TanStackTable } from './components/tan-stack-table';
 import { createColumnHelper } from '@tanstack/react-table';
+
+const engine = new Styletron();
 
 interface Person {
   firstName: string;
@@ -9,18 +15,6 @@ interface Person {
   visits: number;
   status: string;
 }
-
-const meta = {
-  title: 'Components/TanStackTable',
-  component: TanStackTable,
-  parameters: {
-    layout: 'centered',
-  },
-  tags: ['autodocs'],
-} satisfies Meta<typeof TanStackTable<Person>>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
 
 const columnHelper = createColumnHelper<Person>();
 
@@ -78,25 +72,21 @@ const data: Person[] = [
   },
 ];
 
-export const Default: Story = {
-  args: {
-    data,
-    columns: columns as any,
-  },
+const App = () => {
+  return (
+    <StyletronProvider value={engine}>
+      <BaseProvider theme={LightTheme}>
+        <div style={{ padding: '20px' }}>
+          <h1>BaseUI TanStack Table Example</h1>
+          <TanStackTable data={data} columns={columns} />
+        </div>
+      </BaseProvider>
+    </StyletronProvider>
+  );
 };
 
-export const Loading: Story = {
-  args: {
-    data: [] as Person[],
-    columns: columns as any,
-    isLoading: true,
-  },
-};
-
-export const Empty: Story = {
-  args: {
-    data: [] as Person[],
-    columns: columns as any,
-    emptyMessage: 'No people found',
-  },
-};
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);

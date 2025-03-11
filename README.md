@@ -57,10 +57,12 @@ function App() {
 ### Code Conventions
 
 - TypeScript for type safety
+- React 19 with Vite for modern build tooling
 - Functional React components with hooks
 - kebab-case for file names (e.g., `tan-stack-table.tsx`)
 - PascalCase for component names and interfaces
 - camelCase for variables and functions
+- ES modules throughout the codebase
 
 ## License
 

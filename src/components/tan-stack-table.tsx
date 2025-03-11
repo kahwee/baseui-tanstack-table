@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   useReactTable,
   getCoreRowModel,
@@ -65,6 +65,7 @@ export function TanStackTable<T extends object>({
                   <HeadCell
                     key={header.id}
                     onClick={isSortable ? header.column.getToggleSortingHandler() : undefined}
+                    $isFocusVisible={false}
                   >
                     {flexRender(header.column.columnDef.header, header.getContext())}
                     {isSortable && (
