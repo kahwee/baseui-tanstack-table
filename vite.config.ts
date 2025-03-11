@@ -9,13 +9,17 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, 'src'),
     },
+    dedupe: ['react', 'react-dom', 'baseui'],
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'baseui', '@tanstack/react-table', 'styletron-engine-atomic', 'styletron-react'],
   },
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'BaseuiTanstackTable',
+      name: 'BaseuiDataTable',
       formats: ['es', 'umd'],
-      fileName: (format) => `baseui-tanstack-table.${format}.js`,
+      fileName: (format) => `baseui-data-table.${format}.js`,
     },
     rollupOptions: {
       external: ['react', 'react-dom', 'baseui', '@tanstack/react-table', 'styletron-engine-atomic', 'styletron-react'],

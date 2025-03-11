@@ -24,20 +24,22 @@ import {
   StyledTableLoadingMessage,
 } from 'baseui/table-semantic';
 
-export interface TanStackTableProps<T extends object> {
+export interface DataTableProps<T extends object> {
   data: T[];
   columns: ColumnDef<T, any>[];
   isLoading?: boolean;
   emptyMessage?: string;
+  initialSorting?: SortingState;
 }
 
-export function TanStackTable<T extends object>({
+export function DataTable<T extends object>({
   data,
   columns,
   isLoading = false,
   emptyMessage = 'No data available',
-}: TanStackTableProps<T>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  initialSorting = [],
+}: DataTableProps<T>) {
+  const [sorting, setSorting] = React.useState<SortingState>(initialSorting);
 
   const table = useReactTable({
     data,

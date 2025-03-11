@@ -4,6 +4,18 @@ import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
 import { LightTheme, BaseProvider } from 'baseui';
 
+// Handle potential module fetch errors
+if (typeof window !== 'undefined') {
+  window.addEventListener('error', (event) => {
+    if (event.message.includes('Failed to fetch dynamically imported module')) {
+      console.warn('Module fetch error detected. Trying to reload...');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
+  });
+}
+
 // Create a client engine instance
 const engine = new Styletron();
 
