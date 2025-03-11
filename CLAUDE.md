@@ -1,4 +1,4 @@
-# CLAUDE.md - Development Guide for baseui-tanstack-table
+# CLAUDE.md - Development Guide for baseui-data-table
 
 ## Commands
 - Setup: `npm install --legacy-peer-deps`
@@ -31,7 +31,17 @@
   - Leverage semantic table components from baseui/table-semantic
   - Handle loading/empty states with provided components
 
-This project integrates Base Web UI components with TanStack Table for robust data tables.
+## Project Structure
+- `src/components/data-table.tsx`: Main DataTable component
+- `src/components/data-table.stories.tsx`: Storybook stories
+- `src/utils/sample-data.tsx`: Sample data and column definitions
+- `src/index.ts`: Main exports for the library
+
+## Publishing
+- Build: `npm run build`
+- Test: `npm test`
+- Bump version: Edit version in package.json
+- Publish: `npm publish`
 
 ## CI/CD
 - GitHub Actions configured for:
@@ -39,3 +49,9 @@ This project integrates Base Web UI components with TanStack Table for robust da
   - Storybook build verification
   - Dependabot for automatic dependency updates
   - Auto-merge for non-major dependency updates
+
+## Troubleshooting
+- If Storybook shows "TypeError: Failed to fetch dynamically imported module", try:
+  1. Clear your browser cache
+  2. Restart Storybook with `npm run storybook -- --no-cache`
+  3. Check for TypeScript errors with `npm run typecheck`
