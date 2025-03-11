@@ -1,10 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { DataTable } from './data-table';
-import { 
-  samplePersonData,
-  samplePersonColumns,
-  Person 
-} from '../utils/sample-data';
+import { samplePersonData, samplePersonColumns, Person } from '../utils/sample-data';
 
 // Use DataTable with Person type
 const DataTableWithPerson = DataTable<Person>;

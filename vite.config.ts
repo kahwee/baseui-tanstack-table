@@ -12,7 +12,14 @@ export default defineConfig({
     dedupe: ['react', 'react-dom', 'baseui'],
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'baseui', '@tanstack/react-table', 'styletron-engine-atomic', 'styletron-react'],
+    include: [
+      'react',
+      'react-dom',
+      'baseui',
+      '@tanstack/react-table',
+      'styletron-engine-atomic',
+      'styletron-react',
+    ],
   },
   build: {
     lib: {
@@ -22,7 +29,14 @@ export default defineConfig({
       fileName: (format) => `baseui-data-table.${format}.js`,
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'baseui', '@tanstack/react-table', 'styletron-engine-atomic', 'styletron-react'],
+      external: [
+        'react',
+        'react-dom',
+        'baseui',
+        '@tanstack/react-table',
+        'styletron-engine-atomic',
+        'styletron-react',
+      ],
       output: {
         globals: {
           react: 'React',

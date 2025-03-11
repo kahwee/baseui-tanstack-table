@@ -15,8 +15,8 @@ const App = () => {
         <div style={{ padding: '20px' }}>
           <h1>BaseUI Data Table Example</h1>
           <p>Type in the search box to filter the table by first or last name.</p>
-          <DataTable 
-            data={samplePersonData} 
+          <DataTable
+            data={samplePersonData}
             columns={samplePersonColumns}
             searchPlaceholder="Search by name..."
             searchFields={['firstName', 'lastName']}
@@ -30,5 +30,5 @@ const App = () => {
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>
+  </React.StrictMode>,
 );

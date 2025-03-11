@@ -5,10 +5,10 @@ const config: StorybookConfig = {
   addons: ['@storybook/addon-essentials'],
   framework: {
     name: '@storybook/react-vite',
-    options: {}
+    options: {},
   },
   docs: {
-    autodocs: true
+    autodocs: true,
   },
   typescript: {
     reactDocgen: 'react-docgen-typescript',
@@ -16,7 +16,7 @@ const config: StorybookConfig = {
     check: true,
   },
   core: {
-    disableTelemetry: true
+    disableTelemetry: true,
   },
 };
 
