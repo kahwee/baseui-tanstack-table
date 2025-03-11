@@ -18,27 +18,27 @@ export const personColumnHelper = createColumnHelper<Person>();
 export const samplePersonColumns = [
   personColumnHelper.accessor('firstName', {
     header: 'First Name',
-    cell: info => info.getValue(),
+    cell: (info) => info.getValue(),
   }),
   personColumnHelper.accessor('lastName', {
     header: 'Last Name',
-    cell: info => info.getValue(),
+    cell: (info) => info.getValue(),
   }),
   personColumnHelper.accessor('age', {
     header: 'Age',
-    cell: info => info.getValue(),
+    cell: (info) => info.getValue(),
   }),
   personColumnHelper.accessor('visits', {
     header: 'Visits',
-    cell: info => info.getValue(),
+    cell: (info) => info.getValue(),
   }),
   personColumnHelper.accessor('status', {
     header: 'Status',
-    cell: info => {
+    cell: (info) => {
       const status = info.getValue();
       const hierarchy = status === 'active' ? HIERARCHY.primary : HIERARCHY.secondary;
       const label = status === 'active' ? 'Active' : 'Disabled';
-      
+
       return (
         <Tag closeable={false} hierarchy={hierarchy} kind="neutral">
           {label}
@@ -48,7 +48,7 @@ export const samplePersonColumns = [
     sortingFn: (rowA, rowB, columnId) => {
       const statusA = rowA.getValue(columnId);
       const statusB = rowB.getValue(columnId);
-      
+
       // Sort active before disabled
       if (statusA === statusB) return 0;
       return statusA === 'active' ? -1 : 1;

@@ -8,6 +8,7 @@ import {
   ColumnFiltersState,
   flexRender,
   ColumnDef,
+  type Row,
 } from '@tanstack/react-table';
 import {
   StyledRoot,
@@ -25,12 +26,14 @@ import {
   StyledTableEmptyMessage,
   StyledTableLoadingMessage,
 } from 'baseui/table-semantic';
+import { StyledSortIconContainer } from 'baseui/table-semantic/styled-components';
 import { Input } from 'baseui/input';
 import { Search } from 'baseui/icon';
 import { Block } from 'baseui/block';
 
 export interface DataTableProps<T extends object> {
   data: T[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columns: ColumnDef<T, any>[];
   isLoading?: boolean;
   emptyMessage?: string;
@@ -56,28 +59,24 @@ export function DataTable<T extends object>({
 
   // Create a custom global filter function that searches multiple fields
   const customGlobalFilterFn = React.useCallback(
-    (row: any, _columnId: string, filterValue: string) => {
+    (row: Row<T>, _columnId: string, filterValue: string) => {
       const searchTerm = filterValue.toLowerCase();
-      
+
       // Search across specified fields
-      return searchFields.some(field => {
+      return searchFields.some((field) => {
         const value = row.getValue(field);
         return value && String(value).toLowerCase().includes(searchTerm);
       });
     },
-    [searchFields]
+    [searchFields],
   );
 
   const table = useReactTable({
     data,
     columns,
-    state: {
-      sorting,
-      columnFilters,
-      globalFilter,
-    },
+    state: { sorting, columnFilters, globalFilter },
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters, 
+    onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -91,7 +90,7 @@ export function DataTable<T extends object>({
         <Block marginBottom="16px">
           <Input
             value={globalFilter || ''}
-            onChange={e => setGlobalFilter(e.currentTarget.value)}
+            onChange={(e) => setGlobalFilter(e.currentTarget.value)}
             placeholder={searchPlaceholder}
             clearable
             startEnhancer={<Search size={18} />}
@@ -100,8 +99,8 @@ export function DataTable<T extends object>({
                 style: {
                   width: '100%',
                   maxWidth: '300px',
-                }
-              }
+                },
+              },
             }}
           />
         </Block>
@@ -114,7 +113,7 @@ export function DataTable<T extends object>({
                 const isSortable = header.column.getCanSort();
                 const HeadCell = isSortable ? StyledTableHeadCellSortable : StyledTableHeadCell;
                 const sortDirection = header.column.getIsSorted();
-                
+
                 return (
                   <HeadCell
                     key={header.id}
@@ -123,11 +122,11 @@ export function DataTable<T extends object>({
                   >
                     {flexRender(header.column.columnDef.header, header.getContext())}
                     {isSortable && (
-                      <>
+                      <StyledSortIconContainer>
                         {sortDirection === false && <StyledSortNoneIcon />}
                         {sortDirection === 'asc' && <StyledSortAscIcon />}
                         {sortDirection === 'desc' && <StyledSortDescIcon />}
-                      </>
+                      </StyledSortIconContainer>
                     )}
                   </HeadCell>
                 );
@@ -137,13 +136,9 @@ export function DataTable<T extends object>({
         </StyledTableHead>
         <StyledTableBody>
           {isLoading ? (
-            <StyledTableLoadingMessage>
-              Loading data...
-            </StyledTableLoadingMessage>
+            <StyledTableLoadingMessage>Loading data...</StyledTableLoadingMessage>
           ) : table.getRowModel().rows.length === 0 ? (
-            <StyledTableEmptyMessage>
-              {emptyMessage}
-            </StyledTableEmptyMessage>
+            <StyledTableEmptyMessage>{emptyMessage}</StyledTableEmptyMessage>
           ) : (
             table.getRowModel().rows.map((row) => (
               <StyledTableBodyRow key={row.id}>
