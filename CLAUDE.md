@@ -2,9 +2,11 @@
 
 ## Commands
 - Setup: `npm install --legacy-peer-deps`
-- Storybook: `npm run storybook`
-- Build Storybook: `npm run build-storybook`
+- Storybook: `npm run storybook` or `npx storybook dev -p 6006`
+- Build Storybook: `npm run build-storybook` or `npx storybook build`
 - TypeCheck: `npx tsc --noEmit`
+- Lint: `npm run lint`
+- Lint & Fix: `npm run lint:fix`
 
 ## Code Style Guidelines
 - TypeScript: Use strict typing with proper interfaces/types
@@ -27,3 +29,10 @@
   - Handle loading/empty states with provided components
 
 This project integrates Base Web UI components with TanStack Table for robust data tables.
+
+## CI/CD
+- GitHub Actions configured for:
+  - Linting and type checking
+  - Storybook build verification
+  - Dependabot for automatic dependency updates
+  - Auto-merge for non-major dependency updates
