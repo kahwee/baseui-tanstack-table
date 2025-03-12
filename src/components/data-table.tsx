@@ -8,8 +8,10 @@ import {
   ColumnFiltersState,
   flexRender,
   ColumnDef,
-  type Row,
+  FilterFn,
+  Row,
 } from '@tanstack/react-table';
+import { rankItem } from '@tanstack/match-sorter-utils';
 import {
   StyledRoot,
   StyledTable,
@@ -36,6 +38,18 @@ const StyledTableHeadCellSortableNew = withStyle(StyledTableHeadCellSortable, ({
   position: 'relative',
   paddingRight: $theme.sizing.scale1000,
 }));
+
+// Define the default fuzzy filter function for individual columns
+export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+  // Rank the item
+  const itemRank = rankItem(row.getValue(columnId), value);
+
+  // Store the itemRank info
+  addMeta({ itemRank });
+
+  // Return if the item should be filtered in/out
+  return itemRank.passed;
+};
 // Define the props for the DataTable component
 export interface DataTableProps<T extends object> {
   data: T[]; // Array of data objects
@@ -65,15 +79,19 @@ export function DataTable<T extends object>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = React.useState('');
 
-  // Create a custom global filter function that searches multiple fields
+  // Create a fuzzy filter function that searches multiple fields
   const customGlobalFilterFn = React.useCallback(
     (row: Row<T>, _columnId: string, filterValue: string) => {
       const searchTerm = filterValue.toLowerCase();
 
-      // Search across specified fields
+      // Search across specified fields using fuzzy matching
       return searchFields.some((field) => {
         const value = row.getValue(field);
-        return value && String(value).toLowerCase().includes(searchTerm);
+        if (!value) return false;
+        
+        // Use rankItem for fuzzy matching
+        const itemRank = rankItem(String(value), searchTerm);
+        return itemRank.passed;
       });
     },
     [searchFields],
