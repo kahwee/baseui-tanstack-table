@@ -84,3 +84,11 @@ export const WithoutSearch: Story = {
     showSearchBar: false,
   },
 };
+
+export const CheckboxesAtEnd: Story = {
+  args: {
+    data: samplePersonData,
+    columns: samplePersonColumns,
+    checkboxLocation: 'end',
+  },
+};
