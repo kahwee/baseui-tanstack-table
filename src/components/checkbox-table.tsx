@@ -52,6 +52,7 @@ export interface CheckboxTableProps<T extends object> {
   showSearchBar?: boolean; // Optional flag to show/hide the search bar
   onRowSelectionChange?: (rowSelection: RowSelectionState) => void; // Optional callback for row selection changes
   initialRowSelection?: RowSelectionState; // Optional initial row selection state
+  checkboxLocation?: 'start' | 'end'; // Optional position for checkbox column ('start' or 'end')
 }
 
 // CheckboxTable component definition
@@ -66,6 +67,7 @@ export function CheckboxTable<T extends object>({
   showSearchBar = true,
   onRowSelectionChange,
   initialRowSelection = {},
+  checkboxLocation = 'start',
 }: CheckboxTableProps<T>) {
   // State for sorting, column filters, and global filter
   const [sorting, setSorting] = React.useState<SortingState>(initialSorting);
@@ -115,8 +117,9 @@ export function CheckboxTable<T extends object>({
       enableSorting: false,
     };
 
-    return [selectColumn, ...columns];
-  }, [columns]);
+    // Position checkbox column based on checkboxLocation prop
+    return checkboxLocation === 'start' ? [selectColumn, ...columns] : [...columns, selectColumn];
+  }, [columns, checkboxLocation]);
 
   // Initialize the table instance using useReactTable hook
   const table = useReactTable({
