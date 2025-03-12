@@ -9,6 +9,7 @@ import {
   flexRender,
   ColumnDef,
   type Row,
+  RowSelectionState,
 } from '@tanstack/react-table';
 import {
   StyledRoot,
@@ -31,13 +32,15 @@ import { Input } from 'baseui/input';
 import { Search } from 'baseui/icon';
 import { Block } from 'baseui/block';
 import { withStyle } from 'baseui';
+import { Checkbox } from 'baseui/checkbox';
 
 const StyledTableHeadCellSortableNew = withStyle(StyledTableHeadCellSortable, ({ $theme }) => ({
   position: 'relative',
   paddingRight: $theme.sizing.scale1000,
 }));
-// Define the props for the DataTable component
-export interface DataTableProps<T extends object> {
+
+// Define the props for the CheckboxTable component
+export interface CheckboxTableProps<T extends object> {
   data: T[]; // Array of data objects
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columns: ColumnDef<T, any>[]; // Array of column definitions
@@ -47,10 +50,12 @@ export interface DataTableProps<T extends object> {
   searchPlaceholder?: string; // Optional placeholder for the search input
   searchFields?: string[]; // Optional array of fields to search
   showSearchBar?: boolean; // Optional flag to show/hide the search bar
+  onRowSelectionChange?: (rowSelection: RowSelectionState) => void; // Optional callback for row selection changes
+  initialRowSelection?: RowSelectionState; // Optional initial row selection state
 }
 
-// DataTable component definition
-export function DataTable<T extends object>({
+// CheckboxTable component definition
+export function CheckboxTable<T extends object>({
   data,
   columns,
   isLoading = false,
@@ -59,11 +64,14 @@ export function DataTable<T extends object>({
   searchPlaceholder = 'Search...',
   searchFields = ['firstName', 'lastName'],
   showSearchBar = true,
-}: DataTableProps<T>) {
+  onRowSelectionChange,
+  initialRowSelection = {},
+}: CheckboxTableProps<T>) {
   // State for sorting, column filters, and global filter
   const [sorting, setSorting] = React.useState<SortingState>(initialSorting);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = React.useState('');
+  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>(initialRowSelection);
 
   // Create a custom global filter function that searches multiple fields
   const customGlobalFilterFn = React.useCallback(
@@ -79,11 +87,44 @@ export function DataTable<T extends object>({
     [searchFields],
   );
 
+  // Handle row selection changes
+  React.useEffect(() => {
+    onRowSelectionChange?.(rowSelection);
+  }, [rowSelection, onRowSelectionChange]);
+
+  // Create select column and combine with provided columns
+  const allColumns = React.useMemo(() => {
+    // Create a select column definition for row selection checkboxes
+    const selectColumn: ColumnDef<T, unknown> = {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllRowsSelected()}
+          isIndeterminate={table.getIsSomeRowsSelected()}
+          onChange={() => table.toggleAllRowsSelected()}
+          aria-label="Select all rows"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onChange={row.getToggleSelectedHandler()}
+          aria-label={`Select row ${row.index}`}
+        />
+      ),
+      enableSorting: false,
+    };
+
+    return [selectColumn, ...columns];
+  }, [columns]);
+
   // Initialize the table instance using useReactTable hook
   const table = useReactTable({
     data,
-    columns,
-    state: { sorting, columnFilters, globalFilter },
+    columns: allColumns,
+    state: { sorting, columnFilters, globalFilter, rowSelection },
+    enableRowSelection: true,
+    onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
@@ -151,9 +192,17 @@ export function DataTable<T extends object>({
         </StyledTableHead>
         <StyledTableBody>
           {isLoading ? (
-            <StyledTableLoadingMessage>Loading data...</StyledTableLoadingMessage>
+            <tr>
+              <td colSpan={table.getAllColumns().length}>
+                <StyledTableLoadingMessage>Loading data...</StyledTableLoadingMessage>
+              </td>
+            </tr>
           ) : table.getRowModel().rows.length === 0 ? (
-            <StyledTableEmptyMessage>{emptyMessage}</StyledTableEmptyMessage>
+            <tr>
+              <td colSpan={table.getAllColumns().length}>
+                <StyledTableEmptyMessage>{emptyMessage}</StyledTableEmptyMessage>
+              </td>
+            </tr>
           ) : (
             table.getRowModel().rows.map((row) => (
               <StyledTableBodyRow key={row.id}>
@@ -167,6 +216,14 @@ export function DataTable<T extends object>({
           )}
         </StyledTableBody>
       </StyledTable>
+
+      {Object.keys(rowSelection).length > 0 && (
+        <Block marginTop="16px">
+          <div>
+            Selected {Object.keys(rowSelection).length} of {data.length} rows
+          </div>
+        </Block>
+      )}
     </StyledRoot>
   );
 }
