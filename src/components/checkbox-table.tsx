@@ -8,9 +8,10 @@ import {
   ColumnFiltersState,
   flexRender,
   ColumnDef,
-  type Row,
   RowSelectionState,
+  Row,
 } from '@tanstack/react-table';
+import { rankItem } from '@tanstack/match-sorter-utils';
 import {
   StyledRoot,
   StyledTable,
@@ -38,6 +39,9 @@ const StyledTableHeadCellSortableNew = withStyle(StyledTableHeadCellSortable, ({
   position: 'relative',
   paddingRight: $theme.sizing.scale1000,
 }));
+
+// Import the fuzzy filter function from data-table
+// Already exported from data-table.tsx
 
 // Define the props for the CheckboxTable component
 export interface CheckboxTableProps<T extends object> {
@@ -75,15 +79,19 @@ export function CheckboxTable<T extends object>({
   const [globalFilter, setGlobalFilter] = React.useState('');
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>(initialRowSelection);
 
-  // Create a custom global filter function that searches multiple fields
+  // Create a fuzzy filter function that searches multiple fields
   const customGlobalFilterFn = React.useCallback(
     (row: Row<T>, _columnId: string, filterValue: string) => {
       const searchTerm = filterValue.toLowerCase();
 
-      // Search across specified fields
+      // Search across specified fields using fuzzy matching
       return searchFields.some((field) => {
         const value = row.getValue(field);
-        return value && String(value).toLowerCase().includes(searchTerm);
+        if (!value) return false;
+        
+        // Use rankItem for fuzzy matching
+        const itemRank = rankItem(String(value), searchTerm);
+        return itemRank.passed;
       });
     },
     [searchFields],
