@@ -33,6 +33,7 @@ import { Input } from 'baseui/input';
 import { Search } from 'baseui/icon';
 import { Block } from 'baseui/block';
 import { withStyle } from 'baseui';
+import { Pagination } from 'baseui/pagination';
 
 const StyledTableHeadCellSortableNew = withStyle(StyledTableHeadCellSortable, ({ $theme }) => ({
   position: 'relative',
@@ -61,6 +62,13 @@ export interface DataTableProps<T extends object> {
   searchPlaceholder?: string; // Optional placeholder for the search input
   searchFields?: string[]; // Optional array of fields to search
   showSearchBar?: boolean; // Optional flag to show/hide the search bar
+  // Pagination props
+  pagination?: {
+    currentPage: number;
+    pageSize: number;
+    totalPages: number;
+    onPageChange: (params: { nextPage: number }) => void;
+  };
 }
 
 // DataTable component definition
@@ -73,6 +81,7 @@ export function DataTable<T extends object>({
   searchPlaceholder = 'Search...',
   searchFields = ['firstName', 'lastName'],
   showSearchBar = true,
+  pagination,
 }: DataTableProps<T>) {
   // State for sorting, column filters, and global filter
   const [sorting, setSorting] = React.useState<SortingState>(initialSorting);
@@ -107,13 +116,16 @@ export function DataTable<T extends object>({
     onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
+    // Only use client-side filtering if not using server-side pagination
+    getFilteredRowModel: pagination ? undefined : getFilteredRowModel(),
     globalFilterFn: customGlobalFilterFn,
+    // Disable manual mode when using server-side pagination
+    manualPagination: !!pagination,
   });
 
   return (
     <StyledRoot>
-      {showSearchBar && (
+      {showSearchBar && !pagination && (
         <Block marginBottom="16px">
           <Input
             value={globalFilter || ''}
@@ -185,6 +197,16 @@ export function DataTable<T extends object>({
           )}
         </StyledTableBody>
       </StyledTable>
+      
+      {pagination && (
+        <Block marginTop="16px" display="flex" justifyContent="flex-end">
+          <Pagination
+            currentPage={pagination.currentPage}
+            numPages={pagination.totalPages}
+            onPageChange={pagination.onPageChange}
+          />
+        </Block>
+      )}
     </StyledRoot>
   );
 }

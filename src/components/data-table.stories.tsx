@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { DataTable } from './data-table';
 import { samplePersonData, samplePersonColumns, Person } from '../utils/sample-data';
 
@@ -62,5 +63,18 @@ export const WithoutSearch: Story = {
     data: samplePersonData,
     columns: samplePersonColumns,
     showSearchBar: false,
+  },
+};
+
+export const WithPagination: Story = {
+  args: {
+    data: samplePersonData.slice(0, 5), // Simulating paginated data
+    columns: samplePersonColumns,
+    pagination: {
+      currentPage: 1,
+      pageSize: 5,
+      totalPages: 5, // Total of 25 records across 5 pages
+      onPageChange: fn(),
+    },
   },
 };
