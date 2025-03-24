@@ -30,7 +30,7 @@ import {
 } from 'baseui/table-semantic';
 import { StyledSortIconContainer } from 'baseui/table-semantic/styled-components';
 import { Input } from 'baseui/input';
-import { Search } from 'baseui/icon';
+import Search from 'baseui/icon/search';
 import { Block } from 'baseui/block';
 import { withStyle } from 'baseui';
 import { Checkbox } from 'baseui/checkbox';
@@ -88,7 +88,7 @@ export function CheckboxTable<T extends object>({
       return searchFields.some((field) => {
         const value = row.getValue(field);
         if (!value) return false;
-        
+
         // Use rankItem for fuzzy matching
         const itemRank = rankItem(String(value), searchTerm);
         return itemRank.passed;
@@ -154,7 +154,7 @@ export function CheckboxTable<T extends object>({
             onChange={(e) => setGlobalFilter(e.currentTarget.value)}
             placeholder={searchPlaceholder}
             clearable
-            startEnhancer={<Search size={18} />}
+            startEnhancer={() => <Search size={18} />}
             overrides={{
               Root: {
                 style: {

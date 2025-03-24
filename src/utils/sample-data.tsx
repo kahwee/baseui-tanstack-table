@@ -1,4 +1,3 @@
-import { ReactElement } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
 import { Tag, HIERARCHY } from 'baseui/tag';
 
@@ -39,11 +38,10 @@ export const samplePersonColumns = [
       const hierarchy = status === 'active' ? HIERARCHY.primary : HIERARCHY.secondary;
       const label = status === 'active' ? 'Active' : 'Disabled';
 
-      return (
+      return <div>
         <Tag closeable={false} hierarchy={hierarchy} kind="neutral">
           {label}
-        </Tag>
-      ) as ReactElement;
+        </Tag></div>
     },
     sortingFn: (rowA, rowB, columnId) => {
       const statusA = rowA.getValue(columnId);
