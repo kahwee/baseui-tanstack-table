@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import { CheckboxTable } from './checkbox-table';
 import { samplePersonData, samplePersonColumns, Person } from '../utils/sample-data';
-import { RowSelectionState } from '@tanstack/react-table';
 
 // Use CheckboxTable with Person type
 const CheckboxTableWithPerson = CheckboxTable<Person>;

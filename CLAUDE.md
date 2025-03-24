@@ -10,6 +10,7 @@
 - TypeCheck: `npx tsc --noEmit`
 - Lint: `npm run lint`
 - Lint & Fix: `npm run lint:fix`
+- Tests: Make sure to use `fn()` from `@storybook/test` for event handlers in stories
 
 ## Code Style Guidelines
 - TypeScript: Use strict typing with proper interfaces/types
@@ -25,15 +26,19 @@
   - Use appropriate Base Web styled components for table structure
 - TanStack Table:
   - Use columnHelper for type-safe column definitions
-  - Implement core features (sorting, filtering) as needed
+  - Implement core features (sorting, filtering, pagination, row selection) as needed
   - Use flexRender for cell rendering
 - Base UI integration:
   - Leverage semantic table components from baseui/table-semantic
+  - Use Pagination component for server-side pagination
   - Handle loading/empty states with provided components
+  - Support row selection with checkboxes (start or end placement)
 
 ## Project Structure
-- `src/components/data-table.tsx`: Main DataTable component
-- `src/components/data-table.stories.tsx`: Storybook stories
+- `src/components/data-table.tsx`: Main DataTable component with sorting, filtering, and pagination
+- `src/components/data-table.stories.tsx`: Storybook stories for DataTable
+- `src/components/checkbox-table.tsx`: DataTable with row selection functionality
+- `src/components/checkbox-table.stories.tsx`: Storybook stories for CheckboxTable
 - `src/utils/sample-data.tsx`: Sample data and column definitions
 - `src/index.ts`: Main exports for the library
 
@@ -50,8 +55,17 @@
   - Dependabot for automatic dependency updates
   - Auto-merge for non-major dependency updates
 
+## Features
+- **Core Table Features**:
+  - Sorting: Client-side column sorting with visual indicators
+  - Filtering: Global search across configurable fields
+  - Selection: Row selection with checkbox support (start or end placement)
+  - Pagination: Server-side pagination support with BaseUI Pagination component
+
 ## Troubleshooting
 - If Storybook shows "TypeError: Failed to fetch dynamically imported module", try:
   1. Clear your browser cache
   2. Restart Storybook with `npm run storybook -- --no-cache`
   3. Check for TypeScript errors with `npm run typecheck`
+- If you see "Failed to resolve import '@storybook/test'", run:
+  `npm install --save-dev @storybook/test`

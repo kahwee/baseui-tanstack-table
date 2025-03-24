@@ -132,7 +132,7 @@ export function DataTable<T extends object>({
             onChange={(e) => setGlobalFilter(e.currentTarget.value)}
             placeholder={searchPlaceholder}
             clearable
-            startEnhancer={<Search size={18} />}
+            startEnhancer={() => <Search size={18} />}
             overrides={{
               Root: {
                 style: {
