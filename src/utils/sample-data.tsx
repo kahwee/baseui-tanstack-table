@@ -41,7 +41,7 @@ export const samplePersonColumns = [
       return <div>
         <Tag closeable={false} hierarchy={hierarchy} kind="neutral">
           {label}
-        </Tag></div>
+        </Tag></div>;
     },
     sortingFn: (rowA, rowB, columnId) => {
       const statusA = rowA.getValue(columnId);

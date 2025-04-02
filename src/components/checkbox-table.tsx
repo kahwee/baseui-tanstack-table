@@ -83,15 +83,9 @@ export function CheckboxTable<T extends object>({
   const customGlobalFilterFn = React.useCallback(
     (row: Row<T>, _columnId: string, filterValue: string) => {
       const searchTerm = filterValue.toLowerCase();
-
-      // Search across specified fields using fuzzy matching
       return searchFields.some((field) => {
-        const value = row.getValue(field);
-        if (!value) return false;
-
-        // Use rankItem for fuzzy matching
-        const itemRank = rankItem(String(value), searchTerm);
-        return itemRank.passed;
+        const value = String(row.getValue(field) || '').toLowerCase();
+        return rankItem(value, searchTerm).passed;
       });
     },
     [searchFields],
