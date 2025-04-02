@@ -1,25 +1,18 @@
-import eslint from '@eslint/js';
+import { defineConfig } from 'eslint/config';
 import tseslintPlugin from '@typescript-eslint/eslint-plugin';
 import tseslintParser from '@typescript-eslint/parser';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
-import eslintPluginPrettier from 'eslint-plugin-prettier';
 
-export default [
-  eslint.configs.recommended,
+export default defineConfig([
   {
-    files: ['**/*.{js,jsx,ts,tsx}'],
-    plugins: {
-      '@typescript-eslint': tseslintPlugin,
-      react: reactPlugin,
-      'react-hooks': reactHooksPlugin,
-      prettier: eslintPluginPrettier,
-    },
+    files: ['**/*.{js,ts,tsx}'],
+    ignores: ['node_modules/**', 'dist/**'],
     languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
       parser: tseslintParser,
       parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
         ecmaFeatures: {
           jsx: true,
         },
@@ -40,6 +33,11 @@ export default [
         require: 'readonly',
       },
     },
+    plugins: {
+      '@typescript-eslint': tseslintPlugin,
+      react: reactPlugin,
+      'react-hooks': reactHooksPlugin,
+    },
     rules: {
       // React specific rules
       'react/jsx-uses-react': 'error',
@@ -57,19 +55,8 @@ export default [
         },
       ],
       '@typescript-eslint/no-explicit-any': 'warn',
-
-      // Prettier plugin (fully auto-fixable)
-      'prettier/prettier': [
-        'error',
-        {
-          semi: true,
-          singleQuote: true,
-          tabWidth: 2,
-          trailingComma: 'all',
-          printWidth: 100,
-          bracketSpacing: true,
-        },
-      ],
+      semi: ['error', 'always'], // Enforce semicolons
+      indent: ['error', 2], // Enforce 2-space indentation
     },
   },
-];
+]);

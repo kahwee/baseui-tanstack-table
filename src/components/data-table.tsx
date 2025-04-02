@@ -42,13 +42,8 @@ const StyledTableHeadCellSortableNew = withStyle(StyledTableHeadCellSortable, ({
 
 // Define the default fuzzy filter function for individual columns
 export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
-  // Rank the item
-  const itemRank = rankItem(row.getValue(columnId), value);
-
-  // Store the itemRank info
+  const itemRank = rankItem(String(row.getValue(columnId) || ''), value);
   addMeta({ itemRank });
-
-  // Return if the item should be filtered in/out
   return itemRank.passed;
 };
 // Define the props for the DataTable component
@@ -92,15 +87,9 @@ export function DataTable<T extends object>({
   const customGlobalFilterFn = React.useCallback(
     (row: Row<T>, _columnId: string, filterValue: string) => {
       const searchTerm = filterValue.toLowerCase();
-
-      // Search across specified fields using fuzzy matching
       return searchFields.some((field) => {
-        const value = row.getValue(field);
-        if (!value) return false;
-        
-        // Use rankItem for fuzzy matching
-        const itemRank = rankItem(String(value), searchTerm);
-        return itemRank.passed;
+        const value = String(row.getValue(field) || '').toLowerCase();
+        return rankItem(value, searchTerm).passed;
       });
     },
     [searchFields],
@@ -121,6 +110,7 @@ export function DataTable<T extends object>({
     globalFilterFn: customGlobalFilterFn,
     // Disable manual mode when using server-side pagination
     manualPagination: !!pagination,
+    pageCount: pagination ? pagination.totalPages : undefined,
   });
 
   return (
@@ -203,7 +193,7 @@ export function DataTable<T extends object>({
           <Pagination
             currentPage={pagination.currentPage}
             numPages={pagination.totalPages}
-            onPageChange={pagination.onPageChange}
+            onPageChange={({ nextPage }) => pagination.onPageChange({ nextPage })}
           />
         </Block>
       )}

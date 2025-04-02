@@ -16,8 +16,8 @@
     "storybook": "storybook dev -p 6006",
     "storybook:clean": "storybook dev -p 6006 --no-cache",
     "build-storybook": "storybook build",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit"
   },
   "repository": {
