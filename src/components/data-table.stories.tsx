@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { fn } from 'storybook/test';
 import { DataTable } from './data-table';
 import { samplePersonData, samplePersonColumns, Person } from '../utils/sample-data';
 
