@@ -6,7 +6,7 @@
 - Build: `npm run build` (TypeScript + Vite build)
 - Storybook: `npm run storybook` or `npx storybook dev -p 6006`
 - Build Storybook: `npm run build-storybook` or `npx storybook build`
-- Storybook Info: Running Storybook v8 with react-vite framework
+- Storybook Info: Running Storybook v10 with react-vite framework
 - TypeCheck: `npx tsc --noEmit`
 - Lint: `npm run lint`
 - Lint & Fix: `npm run lint:fix`
@@ -54,6 +54,16 @@
   - Storybook build verification
   - Dependabot for automatic dependency updates
   - Auto-merge for non-major dependency updates
+  - GitHub Pages deployment (automatic on push to main branch)
+
+## GitHub Pages Deployment
+- Storybook is automatically deployed to GitHub Pages on every push to main
+- Manual deployment: Run workflow from Actions tab > "Deploy Storybook to GitHub Pages" > Run workflow
+- Setup requirements (one-time):
+  1. Go to repository Settings > Pages
+  2. Under "Build and deployment" > Source: select "GitHub Actions"
+  3. Save changes
+- View your published Storybook at: https://kahwee.github.io/baseui-data-table/
 
 ## Features
 - **Core Table Features**:
