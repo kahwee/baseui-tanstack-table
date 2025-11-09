@@ -1,6 +1,6 @@
 {
   "name": "baseui-data-table",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A data table component for BaseUI using TanStack Table",
   "type": "module",
   "main": "dist/baseui-data-table.umd.js",
