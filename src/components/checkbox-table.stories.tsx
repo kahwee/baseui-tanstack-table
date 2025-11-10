@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { fn } from '@storybook/test';
+import { fn } from 'storybook/test';
 import { CheckboxTable } from './checkbox-table';
 import { samplePersonData, samplePersonColumns, Person } from '../utils/sample-data';
 
