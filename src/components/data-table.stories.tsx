@@ -57,10 +57,6 @@ const meta = {
       control: false,
       description: 'Pagination configuration',
     },
-    onPageChange: {
-      action: 'pageChanged',
-      description: 'Callback when page changes',
-    },
   },
 } satisfies Meta<typeof DataTableWithPerson>;
 
