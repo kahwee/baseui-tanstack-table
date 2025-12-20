@@ -68,10 +68,6 @@ const meta = {
       control: false,
       description: 'Initial sorting configuration',
     },
-    pagination: {
-      control: false,
-      description: 'Pagination configuration',
-    },
   },
 } satisfies Meta<typeof CheckboxTableWithPerson>;
 
