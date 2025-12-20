@@ -17,19 +17,23 @@ export const personColumnHelper = createColumnHelper<Person>();
 export const samplePersonColumns = [
   personColumnHelper.accessor('firstName', {
     header: 'First Name',
-    cell: (info) => info.getValue(),
+    // Default cell renderer can be omitted for simple value display
   }),
   personColumnHelper.accessor('lastName', {
     header: 'Last Name',
-    cell: (info) => info.getValue(),
   }),
   personColumnHelper.accessor('age', {
     header: 'Age',
-    cell: (info) => info.getValue(),
+    // Enable column metadata for custom behaviors
+    meta: {
+      align: 'right',
+    },
   }),
   personColumnHelper.accessor('visits', {
     header: 'Visits',
-    cell: (info) => info.getValue(),
+    meta: {
+      align: 'right',
+    },
   }),
   personColumnHelper.accessor('status', {
     header: 'Status',
@@ -38,19 +42,21 @@ export const samplePersonColumns = [
       const hierarchy = status === 'active' ? HIERARCHY.primary : HIERARCHY.secondary;
       const label = status === 'active' ? 'Active' : 'Disabled';
 
-      return <div>
+      return (
         <Tag closeable={false} hierarchy={hierarchy} kind="neutral">
           {label}
-        </Tag></div>;
+        </Tag>
+      );
     },
+    // Custom sorting: active before disabled
     sortingFn: (rowA, rowB, columnId) => {
-      const statusA = rowA.getValue(columnId);
-      const statusB = rowB.getValue(columnId);
+      const statusA = rowA.getValue(columnId) as string;
+      const statusB = rowB.getValue(columnId) as string;
 
-      // Sort active before disabled
       if (statusA === statusB) return 0;
       return statusA === 'active' ? -1 : 1;
     },
+    enableSorting: true,
   }),
 ];
 

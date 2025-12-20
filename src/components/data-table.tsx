@@ -96,6 +96,7 @@ export function DataTable<T extends object>({
   );
 
   // Initialize the table instance using useReactTable hook
+  // Note: useReactTable already handles memoization internally
   const table = useReactTable({
     data,
     columns,
@@ -108,7 +109,7 @@ export function DataTable<T extends object>({
     // Only use client-side filtering if not using server-side pagination
     getFilteredRowModel: pagination ? undefined : getFilteredRowModel(),
     globalFilterFn: customGlobalFilterFn,
-    // Disable manual mode when using server-side pagination
+    // Server-side pagination support
     manualPagination: !!pagination,
     pageCount: pagination ? pagination.totalPages : undefined,
   });
