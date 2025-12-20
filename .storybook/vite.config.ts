@@ -2,7 +2,7 @@ import { mergeConfig } from 'vite';
 import type { UserConfig } from 'vite';
 import baseConfig from '../vite.config';
 
-export const viteFinal = async (config: UserConfig): Promise<UserConfig> => {
+export const viteFinal = async (_config: UserConfig): Promise<UserConfig> => {
   return mergeConfig(baseConfig, {
     build: {
       lib: undefined,
