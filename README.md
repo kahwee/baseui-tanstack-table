@@ -1,7 +1,7 @@
-# baseui-data-table
+# baseui-tanstack-table
 
-[![Lint](https://github.com/kahwee/baseui-data-table/actions/workflows/lint.yml/badge.svg)](https://github.com/kahwee/baseui-data-table/actions/workflows/lint.yml)
-[![Storybook Build](https://github.com/kahwee/baseui-data-table/actions/workflows/storybook.yml/badge.svg)](https://github.com/kahwee/baseui-data-table/actions/workflows/storybook.yml)
+[![Lint](https://github.com/kahwee/baseui-tanstack-table/actions/workflows/lint.yml/badge.svg)](https://github.com/kahwee/baseui-tanstack-table/actions/workflows/lint.yml)
+[![Storybook Build](https://github.com/kahwee/baseui-tanstack-table/actions/workflows/storybook.yml/badge.svg)](https://github.com/kahwee/baseui-tanstack-table/actions/workflows/storybook.yml)
 
 A React component that integrates [Base Web UI](https://baseweb.design/) semantic table components with [TanStack Table](https://tanstack.com/table/latest) (formerly React Table) for powerful data tables.
 
@@ -18,7 +18,7 @@ A React component that integrates [Base Web UI](https://baseweb.design/) semanti
 ## Installation
 
 ```bash
-npm install baseui-data-table
+npm install baseui-tanstack-table
 ```
 
 ## Usage
@@ -31,7 +31,7 @@ First, set up your Base Web UI provider:
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
 import { LightTheme, BaseProvider } from 'baseui';
-import { DataTable } from 'baseui-data-table';
+import { DataTable } from 'baseui-tanstack-table';
 
 const engine = new Styletron();
 
@@ -56,7 +56,7 @@ function App() {
 The package includes sample data and columns for quick testing:
 
 ```tsx
-import { DataTable, samplePersonData, samplePersonColumns } from 'baseui-data-table';
+import { DataTable, samplePersonData, samplePersonColumns } from 'baseui-tanstack-table';
 
 function ExampleTable() {
   return (
@@ -71,7 +71,7 @@ function ExampleTable() {
 ### With Search Functionality
 
 ```tsx
-import { DataTable } from 'baseui-data-table';
+import { DataTable } from 'baseui-tanstack-table';
 
 function SearchableTable() {
   return (
@@ -88,7 +88,7 @@ function SearchableTable() {
 ### Advanced Usage
 
 ```tsx
-import { DataTable } from 'baseui-data-table';
+import { DataTable } from 'baseui-tanstack-table';
 import { createColumnHelper } from '@tanstack/react-table';
 
 // Define your data interface
@@ -145,8 +145,12 @@ function MyTable() {
 
 ## Development
 
-1. Clone the repository
-2. Install dependencies: `npm install --legacy-peer-deps`
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/kahwee/baseui-tanstack-table.git
+   cd baseui-tanstack-table
+   ```
+2. Install dependencies: `npm install`
 3. Run Storybook: `npm run storybook`
 4. Build the library: `npm run build`
 
