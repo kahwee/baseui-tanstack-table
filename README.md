@@ -3,6 +3,8 @@
 [![Lint](https://github.com/kahwee/baseui-tanstack-table/actions/workflows/lint.yml/badge.svg)](https://github.com/kahwee/baseui-tanstack-table/actions/workflows/lint.yml)
 [![Storybook Build](https://github.com/kahwee/baseui-tanstack-table/actions/workflows/storybook.yml/badge.svg)](https://github.com/kahwee/baseui-tanstack-table/actions/workflows/storybook.yml)
 
+**[View the live Storybook demo](https://kahwee.github.io/baseui-tanstack-table/)**
+
 A React component that integrates [Base Web UI](https://baseweb.design/) semantic table components with [TanStack Table](https://tanstack.com/table/latest) (formerly React Table) for powerful data tables.
 
 ## Features

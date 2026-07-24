@@ -64,7 +64,7 @@
   1. Go to repository Settings > Pages
   2. Under "Build and deployment" > Source: select "GitHub Actions"
   3. Save changes
-- View your published Storybook at: https://kahwee.github.io/baseui-data-table/
+- View your published Storybook at: https://kahwee.github.io/baseui-tanstack-table/
 
 ## Features
 - **Core Table Features**:
