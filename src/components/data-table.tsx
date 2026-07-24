@@ -172,9 +172,17 @@ export function DataTable<T extends object>({
         </StyledTableHead>
         <StyledTableBody>
           {isLoading ? (
-            <StyledTableLoadingMessage>Loading data...</StyledTableLoadingMessage>
+            <tr>
+              <td colSpan={table.getAllColumns().length}>
+                <StyledTableLoadingMessage>Loading data...</StyledTableLoadingMessage>
+              </td>
+            </tr>
           ) : table.getRowModel().rows.length === 0 ? (
-            <StyledTableEmptyMessage>{emptyMessage}</StyledTableEmptyMessage>
+            <tr>
+              <td colSpan={table.getAllColumns().length}>
+                <StyledTableEmptyMessage>{emptyMessage}</StyledTableEmptyMessage>
+              </td>
+            </tr>
           ) : (
             table.getRowModel().rows.map((row) => (
               <StyledTableBodyRow key={row.id}>
