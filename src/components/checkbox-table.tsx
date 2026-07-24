@@ -30,7 +30,6 @@ import {
 } from 'baseui/table-semantic';
 import { StyledSortIconContainer } from 'baseui/table-semantic/styled-components';
 import { Input } from 'baseui/input';
-import Search from 'baseui/icon/search';
 import { Block } from 'baseui/block';
 import { withStyle } from 'baseui';
 import { Checkbox } from 'baseui/checkbox';
@@ -148,7 +147,6 @@ export function CheckboxTable<T extends object>({
             onChange={(e) => setGlobalFilter(e.currentTarget.value)}
             placeholder={searchPlaceholder}
             clearable
-            startEnhancer={() => <Search size={18} />}
             overrides={{
               Root: {
                 style: {
