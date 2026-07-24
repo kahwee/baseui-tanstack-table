@@ -1,15 +1,16 @@
 # CLAUDE.md - Development Guide for baseui-data-table
 
 ## Commands
-- Setup: `npm install --legacy-peer-deps`
-- Development: `npm run dev` (Vite dev server)
-- Build: `npm run build` (TypeScript + Vite build)
-- Storybook: `npm run storybook` or `npx storybook dev -p 6006`
-- Build Storybook: `npm run build-storybook` or `npx storybook build`
+- Runtime: Bun `>=1.3.14` (declared in `package.json`)
+- Setup: `bun install --frozen-lockfile`
+- Development: `bun run dev` (Vite dev server)
+- Build: `bun run build` (TypeScript + Vite build)
+- Storybook: `bun run storybook`
+- Build Storybook: `bun run build-storybook`
 - Storybook Info: Running Storybook v10 with react-vite framework
-- TypeCheck: `npx tsc --noEmit`
-- Lint: `npm run lint`
-- Lint & Fix: `npm run lint:fix`
+- TypeCheck: `bun run typecheck`
+- Lint: `bun run lint`
+- Lint & Fix: `bun run lint:fix`
 - Tests: Make sure to use `fn()` from `@storybook/test` for event handlers in stories
 
 ## Code Style Guidelines
@@ -43,10 +44,10 @@
 - `src/index.ts`: Main exports for the library
 
 ## Publishing
-- Build: `npm run build`
-- Test: `npm test`
+- Build: `bun run build`
+- Test: `bun run test:run`
 - Bump version: Edit version in package.json
-- Publish: `npm publish`
+- Publish: `bun publish`
 
 ## CI/CD
 - GitHub Actions configured for:
@@ -75,7 +76,7 @@
 ## Troubleshooting
 - If Storybook shows "TypeError: Failed to fetch dynamically imported module", try:
   1. Clear your browser cache
-  2. Restart Storybook with `npm run storybook -- --no-cache`
-  3. Check for TypeScript errors with `npm run typecheck`
+  2. Restart Storybook with `bun run storybook:clean`
+  3. Check for TypeScript errors with `bun run typecheck`
 - If you see "Failed to resolve import '@storybook/test'", run:
-  `npm install --save-dev @storybook/test`
+  `bun add -d @storybook/test`

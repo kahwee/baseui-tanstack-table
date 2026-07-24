@@ -150,9 +150,29 @@ function MyTable() {
    git clone https://github.com/kahwee/baseui-tanstack-table.git
    cd baseui-tanstack-table
    ```
-2. Install dependencies: `npm install`
-3. Run Storybook: `npm run storybook`
-4. Build the library: `npm run build`
+2. Install [Bun](https://bun.sh/) 1.3.14 or newer.
+3. Install dependencies: `bun install --frozen-lockfile`
+4. Run Storybook: `bun run storybook`
+5. Build the library: `bun run build`
+
+### Bun commands
+
+This repository uses Bun as its package manager and declares `bun@1.3.14` in
+`package.json`. Use Bun commands rather than npm so the committed `bun.lock`
+remains authoritative:
+
+```bash
+bun install --frozen-lockfile
+bun run lint
+bun run typecheck
+bun run test:run
+bun run build
+bun run build-storybook
+```
+
+TypeScript remains on the highest version supported by the current ESLint and
+declaration-build toolchain. TypeScript 7 is not used until those tools support
+its API.
 
 ### Code Conventions
 
