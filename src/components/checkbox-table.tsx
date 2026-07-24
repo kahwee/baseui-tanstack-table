@@ -32,7 +32,7 @@ import { StyledSortIconContainer } from 'baseui/table-semantic/styled-components
 import { Input } from 'baseui/input';
 import { Block } from 'baseui/block';
 import { withStyle } from 'baseui';
-import { Checkbox } from 'baseui/checkbox';
+import { Checkbox } from 'baseui/checkbox-v2';
 
 const StyledTableHeadCellSortableNew = withStyle(StyledTableHeadCellSortable, ({ $theme }) => ({
   position: 'relative',

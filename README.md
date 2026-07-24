@@ -145,6 +145,12 @@ function MyTable() {
 }
 ```
 
+## Input components
+
+CheckboxTable uses Base Web [Checkbox v2](https://baseweb.design/components/checkbox-v2/) from `baseui/checkbox-v2` for row-selection controls. Keep the selection behavior controlled through TanStack Table and use `checked`, `isIndeterminate`, and the native change event provided by Checkbox v2.
+
+New table examples should use the v2 entry point rather than the legacy `baseui/checkbox` module.
+
 ## Development
 
 1. Clone the repository:
