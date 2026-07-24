@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
-import { CheckboxTable } from './checkbox-table';
+import { CheckboxTable, type CheckboxTableProps } from './checkbox-table';
 import { samplePersonData, samplePersonColumns, Person } from '../utils/sample-data';
 
-const CheckboxTableWithPerson = CheckboxTable<Person>;
+const CheckboxTableWithPerson = (props: CheckboxTableProps<Person>) => <CheckboxTable<Person> {...props} />;
 
 const meta = {
   title: 'Components/CheckboxTable',

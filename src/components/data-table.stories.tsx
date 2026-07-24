@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
-import { DataTable } from './data-table';
+import { DataTable, type DataTableProps } from './data-table';
 import { samplePersonData, samplePersonColumns, Person } from '../utils/sample-data';
 
-const DataTableWithPerson = DataTable<Person>;
+const DataTableWithPerson = (props: DataTableProps<Person>) => <DataTable<Person> {...props} />;
 
 const meta = {
   title: 'Components/DataTable',
