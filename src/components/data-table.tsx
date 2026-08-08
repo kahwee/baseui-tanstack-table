@@ -1,15 +1,15 @@
 import React from 'react';
 import {
-  useReactTable,
-  getCoreRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
+  useTable,
+  stockFeatures,
+  StockFeatures,
   SortingState,
   ColumnFiltersState,
   flexRender,
   ColumnDef,
   FilterFn,
   Row,
+  RowData,
 } from '@tanstack/react-table';
 import { rankItem } from '@tanstack/match-sorter-utils';
 import {
@@ -41,16 +41,17 @@ const StyledTableHeadCellSortableNew = withStyle(StyledTableHeadCellSortable, ({
 }));
 
 // Define the default fuzzy filter function for individual columns
-export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+export const fuzzyFilter: FilterFn<StockFeatures, any> = (row, columnId, value, addMeta) => {
   const itemRank = rankItem(String(row.getValue(columnId) || ''), value);
-  addMeta({ itemRank });
+  addMeta?.({ itemRank });
   return itemRank.passed;
 };
+
 // Define the props for the DataTable component
-export interface DataTableProps<T extends object> {
+export interface DataTableProps<T extends RowData> {
   data: T[]; // Array of data objects
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  columns: ColumnDef<T, any>[]; // Array of column definitions
+  columns: ColumnDef<StockFeatures, T, any>[]; // Array of column definitions
   isLoading?: boolean; // Optional loading state
   emptyMessage?: string; // Optional message when no data is available
   initialSorting?: SortingState; // Optional initial sorting state
@@ -67,7 +68,7 @@ export interface DataTableProps<T extends object> {
 }
 
 // DataTable component definition
-export function DataTable<T extends object>({
+export function DataTable<T extends RowData>({
   data,
   columns,
   isLoading = false,
@@ -85,7 +86,7 @@ export function DataTable<T extends object>({
 
   // Create a fuzzy filter function that searches multiple fields
   const customGlobalFilterFn = React.useCallback(
-    (row: Row<T>, _columnId: string, filterValue: string) => {
+    (row: Row<StockFeatures, T>, _columnId: string, filterValue: string) => {
       const searchTerm = filterValue.toLowerCase();
       return searchFields.some((field) => {
         const value = String(row.getValue(field) || '').toLowerCase();
@@ -95,21 +96,16 @@ export function DataTable<T extends object>({
     [searchFields],
   );
 
-  // Initialize the table instance using useReactTable hook
-  // Note: useReactTable already handles memoization internally
-  const table = useReactTable({
+  // Initialize table instance using v9 useTable hook
+  const table = useTable({
+    features: stockFeatures,
     data,
     columns,
     state: { sorting, columnFilters, globalFilter },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    // Only use client-side filtering if not using server-side pagination
-    getFilteredRowModel: pagination ? undefined : getFilteredRowModel(),
     globalFilterFn: customGlobalFilterFn,
-    // Server-side pagination support
     manualPagination: !!pagination,
     pageCount: pagination ? pagination.totalPages : undefined,
   });
@@ -196,7 +192,7 @@ export function DataTable<T extends object>({
           )}
         </StyledTableBody>
       </StyledTable>
-      
+
       {pagination && (
         <Block marginTop="16px" display="flex" justifyContent="flex-end">
           <Pagination

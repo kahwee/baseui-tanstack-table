@@ -4,7 +4,7 @@ import { DataTable } from './data-table';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
 import { LightTheme, BaseProvider } from 'baseui';
-import { createColumnHelper } from '@tanstack/react-table';
+import { createColumnHelper, StockFeatures } from '@tanstack/react-table';
 
 // Create a wrapper component with necessary providers
 const engine = new Styletron();
@@ -21,7 +21,7 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => (
   </StyletronProvider>
 );
 
-const columnHelper = createColumnHelper<TestData>();
+const columnHelper = createColumnHelper<StockFeatures, TestData>();
 
 const testColumns = [
   columnHelper.accessor('firstName', {
@@ -108,8 +108,8 @@ describe('DataTable', () => {
         <DataTable
           data={testData}
           columns={testColumns}
-          showSearchBar={false}
           searchPlaceholder="Search users..."
+          showSearchBar={false}
         />
       </Wrapper>
     );
