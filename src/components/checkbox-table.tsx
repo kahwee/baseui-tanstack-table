@@ -1,15 +1,15 @@
 import React from 'react';
 import {
-  useReactTable,
-  getCoreRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
+  useTable,
+  stockFeatures,
+  StockFeatures,
   SortingState,
   ColumnFiltersState,
   flexRender,
   ColumnDef,
   RowSelectionState,
   Row,
+  RowData,
 } from '@tanstack/react-table';
 import { rankItem } from '@tanstack/match-sorter-utils';
 import {
@@ -39,14 +39,11 @@ const StyledTableHeadCellSortableNew = withStyle(StyledTableHeadCellSortable, ({
   paddingRight: $theme.sizing.scale1000,
 }));
 
-// Import the fuzzy filter function from data-table
-// Already exported from data-table.tsx
-
 // Define the props for the CheckboxTable component
-export interface CheckboxTableProps<T extends object> {
+export interface CheckboxTableProps<T extends RowData> {
   data: T[]; // Array of data objects
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  columns: ColumnDef<T, any>[]; // Array of column definitions
+  columns: ColumnDef<StockFeatures, T, any>[]; // Array of column definitions
   isLoading?: boolean; // Optional loading state
   emptyMessage?: string; // Optional message when no data is available
   initialSorting?: SortingState; // Optional initial sorting state
@@ -59,7 +56,7 @@ export interface CheckboxTableProps<T extends object> {
 }
 
 // CheckboxTable component definition
-export function CheckboxTable<T extends object>({
+export function CheckboxTable<T extends RowData>({
   data,
   columns,
   isLoading = false,
@@ -72,7 +69,7 @@ export function CheckboxTable<T extends object>({
   initialRowSelection = {},
   checkboxLocation = 'start',
 }: CheckboxTableProps<T>) {
-  // State for sorting, column filters, and global filter
+  // State for sorting, column filters, global filter, and row selection
   const [sorting, setSorting] = React.useState<SortingState>(initialSorting);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = React.useState('');
@@ -80,7 +77,7 @@ export function CheckboxTable<T extends object>({
 
   // Create a fuzzy filter function that searches multiple fields
   const customGlobalFilterFn = React.useCallback(
-    (row: Row<T>, _columnId: string, filterValue: string) => {
+    (row: Row<StockFeatures, T>, _columnId: string, filterValue: string) => {
       const searchTerm = filterValue.toLowerCase();
       return searchFields.some((field) => {
         const value = String(row.getValue(field) || '').toLowerCase();
@@ -98,12 +95,12 @@ export function CheckboxTable<T extends object>({
   // Create select column and combine with provided columns
   const allColumns = React.useMemo(() => {
     // Create a select column definition for row selection checkboxes
-    const selectColumn: ColumnDef<T, unknown> = {
+    const selectColumn: ColumnDef<StockFeatures, T, unknown> = {
       id: 'select',
       header: ({ table }) => (
         <Checkbox
           checked={table.getIsAllRowsSelected()}
-          isIndeterminate={table.getIsSomeRowsSelected()}
+          isIndeterminate={table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()}
           onChange={() => table.toggleAllRowsSelected()}
           aria-label="Select all rows"
         />
@@ -122,8 +119,9 @@ export function CheckboxTable<T extends object>({
     return checkboxLocation === 'start' ? [selectColumn, ...columns] : [...columns, selectColumn];
   }, [columns, checkboxLocation]);
 
-  // Initialize the table instance using useReactTable hook
-  const table = useReactTable({
+  // Initialize the table instance using useTable hook
+  const table = useTable({
+    features: stockFeatures,
     data,
     columns: allColumns,
     state: { sorting, columnFilters, globalFilter, rowSelection },
@@ -132,9 +130,6 @@ export function CheckboxTable<T extends object>({
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     globalFilterFn: customGlobalFilterFn,
   });
 

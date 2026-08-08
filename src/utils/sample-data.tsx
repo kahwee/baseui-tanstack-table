@@ -1,4 +1,4 @@
-import { createColumnHelper } from '@tanstack/react-table';
+import { createColumnHelper, StockFeatures, ColumnDef } from '@tanstack/react-table';
 import { Tag, HIERARCHY } from 'baseui/tag';
 
 // Define the Person interface for sample data
@@ -11,10 +11,10 @@ export interface Person {
 }
 
 // Create a column helper for Person data
-export const personColumnHelper = createColumnHelper<Person>();
+export const personColumnHelper = createColumnHelper<StockFeatures, Person>();
 
 // Define sample columns for Person data
-export const samplePersonColumns = [
+export const samplePersonColumns: ColumnDef<StockFeatures, Person, any>[] = [
   personColumnHelper.accessor('firstName', {
     header: 'First Name',
     // Default cell renderer can be omitted for simple value display
@@ -49,7 +49,7 @@ export const samplePersonColumns = [
       );
     },
     // Custom sorting: active before disabled
-    sortingFn: (rowA, rowB, columnId) => {
+    sortFn: (rowA, rowB, columnId) => {
       const statusA = rowA.getValue(columnId) as string;
       const statusB = rowB.getValue(columnId) as string;
 
