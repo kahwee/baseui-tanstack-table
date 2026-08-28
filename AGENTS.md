@@ -1,7 +1,7 @@
 # AGENTS.md - Development Guide for baseui-data-table
 
 ## Commands
-- Runtime: Bun `>=1.3.14` (declared in `package.json`)
+- Runtime: Bun `>=1.4.0` (declared in `package.json`)
 - Setup: `bun install --frozen-lockfile`
 - Development: `bun run dev` (Vite dev server)
 - Build: `bun run build` (TypeScript + Vite build)

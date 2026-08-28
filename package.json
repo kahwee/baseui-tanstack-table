@@ -3,9 +3,9 @@
   "version": "1.0.1",
   "description": "A data table component for BaseUI using TanStack Table",
   "type": "module",
-  "packageManager": "bun@1.3.14",
+  "packageManager": "bun@1.4.0",
   "engines": {
-    "bun": ">=1.3.14"
+    "bun": ">=1.4.0"
   },
   "main": "dist/baseui-data-table.umd.js",
   "module": "dist/baseui-data-table.es.js",
