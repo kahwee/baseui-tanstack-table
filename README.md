@@ -165,7 +165,7 @@ New table examples should use the v2 entry point rather than the legacy `baseui/
 
 ### Bun commands
 
-This repository uses Bun as its package manager and declares `bun@1.4.0` in
+This repository uses Bun as its package manager and declares `bun@1.4.1` in
 `package.json`. Use Bun commands rather than npm so the committed `bun.lock`
 remains authoritative:
 

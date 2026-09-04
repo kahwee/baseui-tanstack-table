@@ -3,9 +3,9 @@
   "version": "1.0.1",
   "description": "A data table component for BaseUI using TanStack Table",
   "type": "module",
-  "packageManager": "bun@1.4.0",
+  "packageManager": "bun@1.4.1",
   "engines": {
-    "bun": ">=1.4.0"
+    "bun": ">=1.4.1"
   },
   "main": "dist/baseui-data-table.umd.js",
   "module": "dist/baseui-data-table.es.js",
@@ -63,7 +63,7 @@
     "@testing-library/user-event": "^14.6.7",
     "@types/node": "^26.4.1",
     "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.6",
+    "@types/react-dom": "^19.2.7",
     "@typescript-eslint/eslint-plugin": "^8.69.0",
     "@typescript-eslint/parser": "^8.69.0",
     "@vitejs/plugin-react-swc": "^4.3.3",
