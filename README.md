@@ -158,7 +158,7 @@ New table examples should use the v2 entry point rather than the legacy `baseui/
    git clone https://github.com/kahwee/baseui-tanstack-table.git
    cd baseui-tanstack-table
    ```
-2. Install [Bun](https://bun.sh/) 1.4.0 or newer.
+2. Install [Bun](https://bun.sh/) 1.4.1 or newer.
 3. Install dependencies: `bun install --frozen-lockfile`
 4. Run Storybook: `bun run storybook`
 5. Build the library: `bun run build`
