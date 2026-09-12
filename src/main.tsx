@@ -1,12 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { Client as Styletron } from 'styletron-engine-atomic';
-import { Provider as StyletronProvider } from 'styletron-react';
-import { LightTheme, BaseProvider } from 'baseui';
-import { DataTable } from './components/data-table';
-import { samplePersonData, samplePersonColumns } from './utils/sample-data';
+import { BaseProvider, LightTheme } from 'baseui'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { Client as Styletron } from 'styletron-engine-atomic'
+import { Provider as StyletronProvider } from 'styletron-react'
+import { DataTable } from './components/data-table'
+import { samplePersonColumns, samplePersonData } from './utils/sample-data'
 
-const engine = new Styletron();
+const engine = new Styletron()
 
 const App = () => {
   return (
@@ -24,11 +24,17 @@ const App = () => {
         </div>
       </BaseProvider>
     </StyletronProvider>
-  );
-};
+  )
+}
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+const root = document.getElementById('root')
+
+if (!root) {
+  throw new Error('Missing #root element')
+}
+
+ReactDOM.createRoot(root).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-);
+)

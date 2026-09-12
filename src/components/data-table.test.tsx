@@ -1,27 +1,27 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { DataTable } from './data-table';
-import { Client as Styletron } from 'styletron-engine-atomic';
-import { Provider as StyletronProvider } from 'styletron-react';
-import { LightTheme, BaseProvider } from 'baseui';
-import { createColumnHelper, StockFeatures } from '@tanstack/react-table';
+import { createColumnHelper, type StockFeatures } from '@tanstack/react-table'
+import { render, screen } from '@testing-library/react'
+import { BaseProvider, LightTheme } from 'baseui'
+import { Client as Styletron } from 'styletron-engine-atomic'
+import { Provider as StyletronProvider } from 'styletron-react'
+import { describe, expect, it } from 'vitest'
+import { DataTable } from './data-table'
 
 // Create a wrapper component with necessary providers
-const engine = new Styletron();
+const engine = new Styletron()
 
 interface TestData {
-  firstName: string;
-  lastName: string;
-  age: number;
+  firstName: string
+  lastName: string
+  age: number
 }
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => (
   <StyletronProvider value={engine}>
     <BaseProvider theme={LightTheme}>{children}</BaseProvider>
   </StyletronProvider>
-);
+)
 
-const columnHelper = createColumnHelper<StockFeatures, TestData>();
+const columnHelper = createColumnHelper<StockFeatures, TestData>()
 
 const testColumns = [
   columnHelper.accessor('firstName', {
@@ -36,71 +36,71 @@ const testColumns = [
     header: 'Age',
     cell: (info) => info.getValue(),
   }),
-];
+]
 
 const testData: TestData[] = [
   { firstName: 'John', lastName: 'Doe', age: 30 },
   { firstName: 'Jane', lastName: 'Smith', age: 25 },
-];
+]
 
 describe('DataTable', () => {
   it('renders table headers correctly', () => {
     render(
       <Wrapper>
         <DataTable data={testData} columns={testColumns} />
-      </Wrapper>
-    );
+      </Wrapper>,
+    )
 
-    expect(screen.getByText('First Name')).toBeInTheDocument();
-    expect(screen.getByText('Last Name')).toBeInTheDocument();
-    expect(screen.getByText('Age')).toBeInTheDocument();
-  });
+    expect(screen.getByText('First Name')).toBeInTheDocument()
+    expect(screen.getByText('Last Name')).toBeInTheDocument()
+    expect(screen.getByText('Age')).toBeInTheDocument()
+  })
 
   it('renders table data correctly', () => {
     render(
       <Wrapper>
         <DataTable data={testData} columns={testColumns} />
-      </Wrapper>
-    );
+      </Wrapper>,
+    )
 
-    expect(screen.getByText('John')).toBeInTheDocument();
-    expect(screen.getByText('Doe')).toBeInTheDocument();
-    expect(screen.getByText('30')).toBeInTheDocument();
-    expect(screen.getByText('Jane')).toBeInTheDocument();
-    expect(screen.getByText('Smith')).toBeInTheDocument();
-    expect(screen.getByText('25')).toBeInTheDocument();
-  });
+    expect(screen.getByText('John')).toBeInTheDocument()
+    expect(screen.getByText('Doe')).toBeInTheDocument()
+    expect(screen.getByText('30')).toBeInTheDocument()
+    expect(screen.getByText('Jane')).toBeInTheDocument()
+    expect(screen.getByText('Smith')).toBeInTheDocument()
+    expect(screen.getByText('25')).toBeInTheDocument()
+  })
 
   it('displays loading message when isLoading is true', () => {
     render(
       <Wrapper>
         <DataTable data={[]} columns={testColumns} isLoading={true} />
-      </Wrapper>
-    );
+      </Wrapper>,
+    )
 
-    expect(screen.getByText('Loading data...')).toBeInTheDocument();
-  });
+    expect(screen.getByText('Loading data...')).toBeInTheDocument()
+  })
 
   it('displays empty message when no data is available', () => {
-    const customEmptyMessage = 'No records found';
+    const customEmptyMessage = 'No records found'
     render(
       <Wrapper>
         <DataTable data={[]} columns={testColumns} emptyMessage={customEmptyMessage} />
-      </Wrapper>
-    );
+      </Wrapper>,
+    )
 
-    expect(screen.getByText(customEmptyMessage)).toBeInTheDocument();
-  });
+    expect(screen.getByText(customEmptyMessage)).toBeInTheDocument()
+  })
 
   it('renders search bar by default', () => {
     render(
       <Wrapper>
         <DataTable data={testData} columns={testColumns} searchPlaceholder="Search users..." />
-      </Wrapper>
-    );
+      </Wrapper>,
+    )
 
-    expect(screen.getByPlaceholderText('Search users...')).toBeInTheDocument();
-  });
+    expect(screen.getByPlaceholderText('Search users...')).toBeInTheDocument()
+  })
 
   it('hides search bar when showSearchBar is false', () => {
     render(
@@ -111,9 +111,9 @@ describe('DataTable', () => {
           searchPlaceholder="Search users..."
           showSearchBar={false}
         />
-      </Wrapper>
-    );
+      </Wrapper>,
+    )
 
-    expect(screen.queryByPlaceholderText('Search users...')).not.toBeInTheDocument();
-  });
-});
+    expect(screen.queryByPlaceholderText('Search users...')).not.toBeInTheDocument()
+  })
+})

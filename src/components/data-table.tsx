@@ -1,70 +1,71 @@
-import React from 'react';
+import { rankItem } from '@tanstack/match-sorter-utils'
 import {
-  useTable,
-  stockFeatures,
-  StockFeatures,
-  SortingState,
-  ColumnFiltersState,
+  type ColumnDef,
+  type ColumnFiltersState,
+  type FilterFn,
   flexRender,
-  ColumnDef,
-  FilterFn,
-  Row,
-  RowData,
-} from '@tanstack/react-table';
-import { rankItem } from '@tanstack/match-sorter-utils';
+  type Row,
+  type RowData,
+  type SortingState,
+  type StockFeatures,
+  stockFeatures,
+  useTable,
+} from '@tanstack/react-table'
+import { withStyle } from 'baseui'
+import { Block } from 'baseui/block'
+import { Search } from 'baseui/icon'
+import { Input } from 'baseui/input'
+import { Pagination } from 'baseui/pagination'
 import {
   StyledRoot,
-  StyledTable,
-  StyledTableHead,
-  StyledTableHeadRow,
-  StyledTableHeadCell,
-  StyledTableHeadCellSortable,
   StyledSortAscIcon,
   StyledSortDescIcon,
   StyledSortNoneIcon,
+  StyledTable,
   StyledTableBody,
-  StyledTableBodyRow,
   StyledTableBodyCell,
+  StyledTableBodyRow,
   StyledTableEmptyMessage,
+  StyledTableHead,
+  StyledTableHeadCell,
+  StyledTableHeadCellSortable,
+  StyledTableHeadRow,
   StyledTableLoadingMessage,
-} from 'baseui/table-semantic';
-import { StyledSortIconContainer } from 'baseui/table-semantic/styled-components';
-import { Input } from 'baseui/input';
-import { Search } from 'baseui/icon';
-import { Block } from 'baseui/block';
-import { withStyle } from 'baseui';
-import { Pagination } from 'baseui/pagination';
+} from 'baseui/table-semantic'
+import { StyledSortIconContainer } from 'baseui/table-semantic/styled-components'
+import React from 'react'
 
 const StyledTableHeadCellSortableNew = withStyle(StyledTableHeadCellSortable, ({ $theme }) => ({
   position: 'relative',
   paddingRight: $theme.sizing.scale1000,
-}));
+}))
 
 // Define the default fuzzy filter function for individual columns
+// biome-ignore lint/suspicious/noExplicitAny: The reusable filter accepts heterogeneous cell values.
 export const fuzzyFilter: FilterFn<StockFeatures, any> = (row, columnId, value, addMeta) => {
-  const itemRank = rankItem(String(row.getValue(columnId) || ''), value);
-  addMeta?.({ itemRank });
-  return itemRank.passed;
-};
+  const itemRank = rankItem(String(row.getValue(columnId) || ''), value)
+  addMeta?.({ itemRank })
+  return itemRank.passed
+}
 
 // Define the props for the DataTable component
 export interface DataTableProps<T extends RowData> {
-  data: T[]; // Array of data objects
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  columns: ColumnDef<StockFeatures, T, any>[]; // Array of column definitions
-  isLoading?: boolean; // Optional loading state
-  emptyMessage?: string; // Optional message when no data is available
-  initialSorting?: SortingState; // Optional initial sorting state
-  searchPlaceholder?: string; // Optional placeholder for the search input
-  searchFields?: string[]; // Optional array of fields to search
-  showSearchBar?: boolean; // Optional flag to show/hide the search bar
+  data: T[] // Array of data objects
+  // biome-ignore lint/suspicious/noExplicitAny: TanStack column values are intentionally heterogeneous.
+  columns: ColumnDef<StockFeatures, T, any>[] // Array of column definitions
+  isLoading?: boolean // Optional loading state
+  emptyMessage?: string // Optional message when no data is available
+  initialSorting?: SortingState // Optional initial sorting state
+  searchPlaceholder?: string // Optional placeholder for the search input
+  searchFields?: string[] // Optional array of fields to search
+  showSearchBar?: boolean // Optional flag to show/hide the search bar
   // Pagination props
   pagination?: {
-    currentPage: number;
-    pageSize: number;
-    totalPages: number;
-    onPageChange: (params: { nextPage: number }) => void;
-  };
+    currentPage: number
+    pageSize: number
+    totalPages: number
+    onPageChange: (params: { nextPage: number }) => void
+  }
 }
 
 // DataTable component definition
@@ -80,21 +81,21 @@ export function DataTable<T extends RowData>({
   pagination,
 }: DataTableProps<T>) {
   // State for sorting, column filters, and global filter
-  const [sorting, setSorting] = React.useState<SortingState>(initialSorting);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [globalFilter, setGlobalFilter] = React.useState('');
+  const [sorting, setSorting] = React.useState<SortingState>(initialSorting)
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+  const [globalFilter, setGlobalFilter] = React.useState('')
 
   // Create a fuzzy filter function that searches multiple fields
   const customGlobalFilterFn = React.useCallback(
     (row: Row<StockFeatures, T>, _columnId: string, filterValue: string) => {
-      const searchTerm = filterValue.toLowerCase();
+      const searchTerm = filterValue.toLowerCase()
       return searchFields.some((field) => {
-        const value = String(row.getValue(field) || '').toLowerCase();
-        return rankItem(value, searchTerm).passed;
-      });
+        const value = String(row.getValue(field) || '').toLowerCase()
+        return rankItem(value, searchTerm).passed
+      })
     },
     [searchFields],
-  );
+  )
 
   // Initialize table instance using v9 useTable hook
   const table = useTable({
@@ -108,7 +109,7 @@ export function DataTable<T extends RowData>({
     globalFilterFn: customGlobalFilterFn,
     manualPagination: !!pagination,
     pageCount: pagination ? pagination.totalPages : undefined,
-  });
+  })
 
   return (
     <StyledRoot>
@@ -136,9 +137,9 @@ export function DataTable<T extends RowData>({
           {table.getHeaderGroups().map((headerGroup) => (
             <StyledTableHeadRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
-                const isSortable = header.column.getCanSort();
-                const HeadCell = isSortable ? StyledTableHeadCellSortableNew : StyledTableHeadCell;
-                const sortDirection = header.column.getIsSorted();
+                const isSortable = header.column.getCanSort()
+                const HeadCell = isSortable ? StyledTableHeadCellSortableNew : StyledTableHeadCell
+                const sortDirection = header.column.getIsSorted()
 
                 return (
                   <HeadCell
@@ -161,7 +162,7 @@ export function DataTable<T extends RowData>({
                       </StyledSortIconContainer>
                     )}
                   </HeadCell>
-                );
+                )
               })}
             </StyledTableHeadRow>
           ))}
@@ -203,5 +204,5 @@ export function DataTable<T extends RowData>({
         </Block>
       )}
     </StyledRoot>
-  );
+  )
 }

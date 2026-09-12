@@ -1,19 +1,20 @@
-import { createColumnHelper, StockFeatures, ColumnDef } from '@tanstack/react-table';
-import { Tag, HIERARCHY } from 'baseui/tag';
+import { type ColumnDef, createColumnHelper, type StockFeatures } from '@tanstack/react-table'
+import { HIERARCHY, Tag } from 'baseui/tag'
 
 // Define the Person interface for sample data
 export interface Person {
-  firstName: string;
-  lastName: string;
-  age: number;
-  visits: number;
-  status: 'active' | 'disabled';
+  firstName: string
+  lastName: string
+  age: number
+  visits: number
+  status: 'active' | 'disabled'
 }
 
 // Create a column helper for Person data
-export const personColumnHelper = createColumnHelper<StockFeatures, Person>();
+export const personColumnHelper = createColumnHelper<StockFeatures, Person>()
 
 // Define sample columns for Person data
+// biome-ignore lint/suspicious/noExplicitAny: Sample columns intentionally demonstrate mixed value types.
 export const samplePersonColumns: ColumnDef<StockFeatures, Person, any>[] = [
   personColumnHelper.accessor('firstName', {
     header: 'First Name',
@@ -38,27 +39,27 @@ export const samplePersonColumns: ColumnDef<StockFeatures, Person, any>[] = [
   personColumnHelper.accessor('status', {
     header: 'Status',
     cell: (info) => {
-      const status = info.getValue();
-      const hierarchy = status === 'active' ? HIERARCHY.primary : HIERARCHY.secondary;
-      const label = status === 'active' ? 'Active' : 'Disabled';
+      const status = info.getValue()
+      const hierarchy = status === 'active' ? HIERARCHY.primary : HIERARCHY.secondary
+      const label = status === 'active' ? 'Active' : 'Disabled'
 
       return (
         <Tag closeable={false} hierarchy={hierarchy} kind="neutral">
           {label}
         </Tag>
-      );
+      )
     },
     // Custom sorting: active before disabled
     sortFn: (rowA, rowB, columnId) => {
-      const statusA = rowA.getValue(columnId) as string;
-      const statusB = rowB.getValue(columnId) as string;
+      const statusA = rowA.getValue(columnId) as string
+      const statusB = rowB.getValue(columnId) as string
 
-      if (statusA === statusB) return 0;
-      return statusA === 'active' ? -1 : 1;
+      if (statusA === statusB) return 0
+      return statusA === 'active' ? -1 : 1
     },
     enableSorting: true,
   }),
-];
+]
 
 // Define sample data for Person
 export const samplePersonData: Person[] = [
@@ -132,4 +133,4 @@ export const samplePersonData: Person[] = [
     visits: 14,
     status: 'active',
   },
-];
+]

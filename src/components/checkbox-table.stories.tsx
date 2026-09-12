@@ -1,9 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import { fn } from 'storybook/test';
-import { CheckboxTable, type CheckboxTableProps } from './checkbox-table';
-import { samplePersonData, samplePersonColumns, Person } from '../utils/sample-data';
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { fn } from 'storybook/test'
+import { type Person, samplePersonColumns, samplePersonData } from '../utils/sample-data'
+import { CheckboxTable, type CheckboxTableProps } from './checkbox-table'
 
-const CheckboxTableWithPerson = (props: CheckboxTableProps<Person>) => <CheckboxTable<Person> {...props} />;
+const CheckboxTableWithPerson = (props: CheckboxTableProps<Person>) => (
+  <CheckboxTable<Person> {...props} />
+)
 
 const meta = {
   title: 'Components/CheckboxTable',
@@ -69,17 +71,17 @@ const meta = {
       description: 'Initial sorting configuration',
     },
   },
-} satisfies Meta<typeof CheckboxTableWithPerson>;
+} satisfies Meta<typeof CheckboxTableWithPerson>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 /**
  * Default CheckboxTable with row selection enabled.
  * Use the controls panel to toggle features dynamically.
  * Monitor the Actions panel to see selection changes.
  */
-export const Default: Story = {};
+export const Default: Story = {}
 
 /**
  * Table with pre-selected rows (first and third rows).
@@ -89,7 +91,7 @@ export const WithInitialSelection: Story = {
   args: {
     initialRowSelection: { 0: true, 2: true },
   },
-};
+}
 
 /**
  * Shows the loading state while data is being fetched.
@@ -100,7 +102,7 @@ export const Loading: Story = {
     data: [],
     isLoading: true,
   },
-};
+}
 
 /**
  * Displays a custom message when the table has no data.
@@ -112,7 +114,7 @@ export const Empty: Story = {
     isLoading: false,
     emptyMessage: 'No people found',
   },
-};
+}
 
 /**
  * Checkboxes positioned at the end of the row instead of the beginning.
@@ -122,7 +124,7 @@ export const CheckboxesAtEnd: Story = {
   args: {
     checkboxLocation: 'end',
   },
-};
+}
 
 /**
  * Table pre-sorted by age in descending order.
@@ -132,4 +134,4 @@ export const SortedByAge: Story = {
   args: {
     initialSorting: [{ id: 'age', desc: true }],
   },
-};
+}

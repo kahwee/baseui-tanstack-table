@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import { fn } from 'storybook/test';
-import { DataTable, type DataTableProps } from './data-table';
-import { samplePersonData, samplePersonColumns, Person } from '../utils/sample-data';
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { fn } from 'storybook/test'
+import { type Person, samplePersonColumns, samplePersonData } from '../utils/sample-data'
+import { DataTable, type DataTableProps } from './data-table'
 
-const DataTableWithPerson = (props: DataTableProps<Person>) => <DataTable<Person> {...props} />;
+const DataTableWithPerson = (props: DataTableProps<Person>) => <DataTable<Person> {...props} />
 
 const meta = {
   title: 'Components/DataTable',
@@ -58,16 +58,16 @@ const meta = {
       description: 'Pagination configuration',
     },
   },
-} satisfies Meta<typeof DataTableWithPerson>;
+} satisfies Meta<typeof DataTableWithPerson>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 /**
  * Default DataTable with all features enabled: search, sorting, and sample data.
  * Use the controls panel to toggle features dynamically.
  */
-export const Default: Story = {};
+export const Default: Story = {}
 
 /**
  * Shows the loading state while data is being fetched.
@@ -78,7 +78,7 @@ export const Loading: Story = {
     data: [],
     isLoading: true,
   },
-};
+}
 
 /**
  * Displays a custom message when the table has no data.
@@ -90,7 +90,7 @@ export const Empty: Story = {
     isLoading: false,
     emptyMessage: 'No people found',
   },
-};
+}
 
 /**
  * Demonstrates server-side pagination with a limited dataset.
@@ -106,7 +106,7 @@ export const WithPagination: Story = {
       onPageChange: fn(),
     },
   },
-};
+}
 
 /**
  * Table pre-sorted by age in descending order.
@@ -116,4 +116,4 @@ export const SortedByAge: Story = {
   args: {
     initialSorting: [{ id: 'age', desc: true }],
   },
-};
+}
