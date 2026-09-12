@@ -1,9 +1,9 @@
-import type { Preview } from '@storybook/react-vite';
-import { Client as Styletron } from 'styletron-engine-atomic';
-import { Provider as StyletronProvider } from 'styletron-react';
-import { LightTheme, BaseProvider } from 'baseui';
+import type { Preview } from '@storybook/react-vite'
+import { BaseProvider, LightTheme } from 'baseui'
+import { Client as Styletron } from 'styletron-engine-atomic'
+import { Provider as StyletronProvider } from 'styletron-react'
 
-const engine = new Styletron();
+const engine = new Styletron()
 
 const preview: Preview = {
   decorators: [
@@ -24,6 +24,6 @@ const preview: Preview = {
       },
     },
   },
-};
+}
 
-export default preview;
+export default preview

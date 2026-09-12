@@ -1,58 +1,58 @@
-import React from 'react';
+import { rankItem } from '@tanstack/match-sorter-utils'
 import {
-  useTable,
-  stockFeatures,
-  StockFeatures,
-  SortingState,
-  ColumnFiltersState,
+  type ColumnDef,
+  type ColumnFiltersState,
   flexRender,
-  ColumnDef,
-  RowSelectionState,
-  Row,
-  RowData,
-} from '@tanstack/react-table';
-import { rankItem } from '@tanstack/match-sorter-utils';
+  type Row,
+  type RowData,
+  type RowSelectionState,
+  type SortingState,
+  type StockFeatures,
+  stockFeatures,
+  useTable,
+} from '@tanstack/react-table'
+import { withStyle } from 'baseui'
+import { Block } from 'baseui/block'
+import { Checkbox } from 'baseui/checkbox-v2'
+import { Input } from 'baseui/input'
 import {
   StyledRoot,
-  StyledTable,
-  StyledTableHead,
-  StyledTableHeadRow,
-  StyledTableHeadCell,
-  StyledTableHeadCellSortable,
   StyledSortAscIcon,
   StyledSortDescIcon,
   StyledSortNoneIcon,
+  StyledTable,
   StyledTableBody,
-  StyledTableBodyRow,
   StyledTableBodyCell,
+  StyledTableBodyRow,
   StyledTableEmptyMessage,
+  StyledTableHead,
+  StyledTableHeadCell,
+  StyledTableHeadCellSortable,
+  StyledTableHeadRow,
   StyledTableLoadingMessage,
-} from 'baseui/table-semantic';
-import { StyledSortIconContainer } from 'baseui/table-semantic/styled-components';
-import { Input } from 'baseui/input';
-import { Block } from 'baseui/block';
-import { withStyle } from 'baseui';
-import { Checkbox } from 'baseui/checkbox-v2';
+} from 'baseui/table-semantic'
+import { StyledSortIconContainer } from 'baseui/table-semantic/styled-components'
+import React from 'react'
 
 const StyledTableHeadCellSortableNew = withStyle(StyledTableHeadCellSortable, ({ $theme }) => ({
   position: 'relative',
   paddingRight: $theme.sizing.scale1000,
-}));
+}))
 
 // Define the props for the CheckboxTable component
 export interface CheckboxTableProps<T extends RowData> {
-  data: T[]; // Array of data objects
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  columns: ColumnDef<StockFeatures, T, any>[]; // Array of column definitions
-  isLoading?: boolean; // Optional loading state
-  emptyMessage?: string; // Optional message when no data is available
-  initialSorting?: SortingState; // Optional initial sorting state
-  searchPlaceholder?: string; // Optional placeholder for the search input
-  searchFields?: string[]; // Optional array of fields to search
-  showSearchBar?: boolean; // Optional flag to show/hide the search bar
-  onRowSelectionChange?: (rowSelection: RowSelectionState) => void; // Optional callback for row selection changes
-  initialRowSelection?: RowSelectionState; // Optional initial row selection state
-  checkboxLocation?: 'start' | 'end'; // Optional position for checkbox column ('start' or 'end')
+  data: T[] // Array of data objects
+  // biome-ignore lint/suspicious/noExplicitAny: TanStack column values are intentionally heterogeneous.
+  columns: ColumnDef<StockFeatures, T, any>[] // Array of column definitions
+  isLoading?: boolean // Optional loading state
+  emptyMessage?: string // Optional message when no data is available
+  initialSorting?: SortingState // Optional initial sorting state
+  searchPlaceholder?: string // Optional placeholder for the search input
+  searchFields?: string[] // Optional array of fields to search
+  showSearchBar?: boolean // Optional flag to show/hide the search bar
+  onRowSelectionChange?: (rowSelection: RowSelectionState) => void // Optional callback for row selection changes
+  initialRowSelection?: RowSelectionState // Optional initial row selection state
+  checkboxLocation?: 'start' | 'end' // Optional position for checkbox column ('start' or 'end')
 }
 
 // CheckboxTable component definition
@@ -70,27 +70,27 @@ export function CheckboxTable<T extends RowData>({
   checkboxLocation = 'start',
 }: CheckboxTableProps<T>) {
   // State for sorting, column filters, global filter, and row selection
-  const [sorting, setSorting] = React.useState<SortingState>(initialSorting);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [globalFilter, setGlobalFilter] = React.useState('');
-  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>(initialRowSelection);
+  const [sorting, setSorting] = React.useState<SortingState>(initialSorting)
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+  const [globalFilter, setGlobalFilter] = React.useState('')
+  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>(initialRowSelection)
 
   // Create a fuzzy filter function that searches multiple fields
   const customGlobalFilterFn = React.useCallback(
     (row: Row<StockFeatures, T>, _columnId: string, filterValue: string) => {
-      const searchTerm = filterValue.toLowerCase();
+      const searchTerm = filterValue.toLowerCase()
       return searchFields.some((field) => {
-        const value = String(row.getValue(field) || '').toLowerCase();
-        return rankItem(value, searchTerm).passed;
-      });
+        const value = String(row.getValue(field) || '').toLowerCase()
+        return rankItem(value, searchTerm).passed
+      })
     },
     [searchFields],
-  );
+  )
 
   // Handle row selection changes
   React.useEffect(() => {
-    onRowSelectionChange?.(rowSelection);
-  }, [rowSelection, onRowSelectionChange]);
+    onRowSelectionChange?.(rowSelection)
+  }, [rowSelection, onRowSelectionChange])
 
   // Create select column and combine with provided columns
   const allColumns = React.useMemo(() => {
@@ -113,11 +113,11 @@ export function CheckboxTable<T extends RowData>({
         />
       ),
       enableSorting: false,
-    };
+    }
 
     // Position checkbox column based on checkboxLocation prop
-    return checkboxLocation === 'start' ? [selectColumn, ...columns] : [...columns, selectColumn];
-  }, [columns, checkboxLocation]);
+    return checkboxLocation === 'start' ? [selectColumn, ...columns] : [...columns, selectColumn]
+  }, [columns, checkboxLocation])
 
   // Initialize the table instance using useTable hook
   const table = useTable({
@@ -131,7 +131,7 @@ export function CheckboxTable<T extends RowData>({
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
     globalFilterFn: customGlobalFilterFn,
-  });
+  })
 
   return (
     <StyledRoot>
@@ -158,9 +158,9 @@ export function CheckboxTable<T extends RowData>({
           {table.getHeaderGroups().map((headerGroup) => (
             <StyledTableHeadRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
-                const isSortable = header.column.getCanSort();
-                const HeadCell = isSortable ? StyledTableHeadCellSortableNew : StyledTableHeadCell;
-                const sortDirection = header.column.getIsSorted();
+                const isSortable = header.column.getCanSort()
+                const HeadCell = isSortable ? StyledTableHeadCellSortableNew : StyledTableHeadCell
+                const sortDirection = header.column.getIsSorted()
 
                 return (
                   <HeadCell
@@ -183,7 +183,7 @@ export function CheckboxTable<T extends RowData>({
                       </StyledSortIconContainer>
                     )}
                   </HeadCell>
-                );
+                )
               })}
             </StyledTableHeadRow>
           ))}
@@ -223,5 +223,5 @@ export function CheckboxTable<T extends RowData>({
         </Block>
       )}
     </StyledRoot>
-  );
+  )
 }
