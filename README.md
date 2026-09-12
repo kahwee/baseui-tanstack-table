@@ -178,7 +178,7 @@ bun run build
 bun run build-storybook
 ```
 
-TypeScript remains on the highest version supported by the current ESLint and
+TypeScript remains on the highest version supported by the current Biome and
 declaration-build toolchain. TypeScript 7 is not used until those tools support
 its API.
 
