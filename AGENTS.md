@@ -11,7 +11,7 @@
 - TypeCheck: `bun run typecheck`
 - Lint: `bun run lint`
 - Lint & Fix: `bun run lint:fix`
-- Tests: Make sure to use `fn()` from `@storybook/test` for event handlers in stories
+- Tests: Make sure to use `fn()` from `storybook/test` for event handlers in stories
 
 ## Code Style Guidelines
 - TypeScript: Use strict typing with proper interfaces/types
@@ -81,5 +81,5 @@
   1. Clear your browser cache
   2. Restart Storybook with `bun run storybook:clean`
   3. Check for TypeScript errors with `bun run typecheck`
-- If you see "Failed to resolve import '@storybook/test'", run:
-  `bun add -d @storybook/test`
+- If you see "Failed to resolve import 'storybook/test'", ensure `storybook` is installed
+  (`bun add -d storybook`) — Storybook 10 exports test helpers from `storybook/test`

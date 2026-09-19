@@ -31,7 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kahwee/baseui-data-table.git"
+    "url": "git+https://github.com/kahwee/baseui-tanstack-table.git"
   },
   "keywords": [
     "baseui",
@@ -43,9 +43,9 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kahwee/baseui-data-table/issues"
+    "url": "https://github.com/kahwee/baseui-tanstack-table/issues"
   },
-  "homepage": "https://github.com/kahwee/baseui-data-table#readme",
+  "homepage": "https://github.com/kahwee/baseui-tanstack-table#readme",
   "dependencies": {
     "@tanstack/match-sorter-utils": "^9.1.2",
     "@tanstack/react-table": "^9.2.4",
@@ -56,25 +56,25 @@
     "styletron-react": "^6.1.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.13",
+    "@biomejs/biome": "2.5.14",
     "@storybook/addon-docs": "^10.6.0",
     "@storybook/react-vite": "^10.6.0",
-    "@testing-library/dom": "^10.4.1",
+    "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.7",
-    "@types/node": "^26.5.1",
+    "@types/node": "^26.6.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.1",
-    "@vitest/coverage-v8": "^5.0.0",
-    "@vitest/ui": "^5.0.0",
+    "@vitest/coverage-v8": "^5.0.1",
+    "@vitest/ui": "^5.0.1",
     "jiti": "^2.7.0",
-    "jsdom": "^30.0.1",
+    "jsdom": "^30.1.0",
     "storybook": "^10.6.0",
     "typescript": "6.0.3",
     "vite": "^8.3.0",
-    "vitest": "^5.0.0"
+    "vitest": "^5.0.1"
   },
   "overrides": {
     "@types/react": "$@types/react",
