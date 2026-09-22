@@ -1,9 +1,8 @@
 import { rankItem } from '@tanstack/match-sorter-utils'
 import {
-  type ColumnDef,
   type ColumnFiltersState,
+  type FilterFn,
   flexRender,
-  type Row,
   type RowData,
   type RowSelectionState,
   type SortingState,
@@ -33,6 +32,7 @@ import {
 } from 'baseui/table-semantic'
 import { StyledSortIconContainer } from 'baseui/table-semantic/styled-components'
 import React from 'react'
+import type { DataTableColumn, DataTableColumns, DataTableSearchField } from '../types'
 
 const StyledTableHeadCellSortableNew = withStyle(StyledTableHeadCellSortable, ({ $theme }) => ({
   position: 'relative',
@@ -42,13 +42,12 @@ const StyledTableHeadCellSortableNew = withStyle(StyledTableHeadCellSortable, ({
 // Define the props for the CheckboxTable component
 export interface CheckboxTableProps<T extends RowData> {
   data: T[] // Array of data objects
-  // biome-ignore lint/suspicious/noExplicitAny: TanStack column values are intentionally heterogeneous.
-  columns: ColumnDef<StockFeatures, T, any>[] // Array of column definitions
+  columns: DataTableColumns<T> // Array of column definitions
   isLoading?: boolean // Optional loading state
   emptyMessage?: string // Optional message when no data is available
   initialSorting?: SortingState // Optional initial sorting state
   searchPlaceholder?: string // Optional placeholder for the search input
-  searchFields?: string[] // Optional array of fields to search
+  searchFields?: readonly DataTableSearchField<T>[] // Optional array of fields to search
   showSearchBar?: boolean // Optional flag to show/hide the search bar
   onRowSelectionChange?: (rowSelection: RowSelectionState) => void // Optional callback for row selection changes
   initialRowSelection?: RowSelectionState // Optional initial row selection state
@@ -63,7 +62,7 @@ export function CheckboxTable<T extends RowData>({
   emptyMessage = 'No data available',
   initialSorting = [],
   searchPlaceholder = 'Search...',
-  searchFields = ['firstName', 'lastName'],
+  searchFields,
   showSearchBar = true,
   onRowSelectionChange,
   initialRowSelection = {},
@@ -76,11 +75,16 @@ export function CheckboxTable<T extends RowData>({
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>(initialRowSelection)
 
   // Create a fuzzy filter function that searches multiple fields
-  const customGlobalFilterFn = React.useCallback(
-    (row: Row<StockFeatures, T>, _columnId: string, filterValue: string) => {
-      const searchTerm = filterValue.toLowerCase()
+  const customGlobalFilterFn = React.useCallback<FilterFn<StockFeatures, T>>(
+    (row, columnId, filterValue: unknown) => {
+      const searchTerm = String(filterValue ?? '').toLowerCase()
+      if (!searchFields) {
+        const value = String(row.getValue(columnId) ?? '').toLowerCase()
+        return rankItem(value, searchTerm).passed
+      }
+
       return searchFields.some((field) => {
-        const value = String(row.getValue(field) || '').toLowerCase()
+        const value = String(row.getValue(field) ?? '').toLowerCase()
         return rankItem(value, searchTerm).passed
       })
     },
@@ -95,7 +99,7 @@ export function CheckboxTable<T extends RowData>({
   // Create select column and combine with provided columns
   const allColumns = React.useMemo(() => {
     // Create a select column definition for row selection checkboxes
-    const selectColumn: ColumnDef<StockFeatures, T, unknown> = {
+    const selectColumn: DataTableColumn<T> = {
       id: 'select',
       header: ({ table }) => (
         <Checkbox

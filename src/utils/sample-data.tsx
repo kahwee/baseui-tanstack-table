@@ -1,5 +1,6 @@
-import { type ColumnDef, createColumnHelper, type StockFeatures } from '@tanstack/react-table'
+import { createColumnHelper, type StockFeatures } from '@tanstack/react-table'
 import { HIERARCHY, Tag } from 'baseui/tag'
+import type { DataTableColumns } from '../types'
 
 // Define the Person interface for sample data
 export interface Person {
@@ -14,8 +15,7 @@ export interface Person {
 export const personColumnHelper = createColumnHelper<StockFeatures, Person>()
 
 // Define sample columns for Person data
-// biome-ignore lint/suspicious/noExplicitAny: Sample columns intentionally demonstrate mixed value types.
-export const samplePersonColumns: ColumnDef<StockFeatures, Person, any>[] = [
+export const samplePersonColumns: DataTableColumns<Person> = [
   personColumnHelper.accessor('firstName', {
     header: 'First Name',
     // Default cell renderer can be omitted for simple value display
@@ -51,8 +51,8 @@ export const samplePersonColumns: ColumnDef<StockFeatures, Person, any>[] = [
     },
     // Custom sorting: active before disabled
     sortFn: (rowA, rowB, columnId) => {
-      const statusA = rowA.getValue(columnId) as string
-      const statusB = rowB.getValue(columnId) as string
+      const statusA = rowA.getValue<Person['status']>(columnId)
+      const statusB = rowB.getValue<Person['status']>(columnId)
 
       if (statusA === statusB) return 0
       return statusA === 'active' ? -1 : 1

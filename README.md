@@ -90,8 +90,9 @@ function SearchableTable() {
 ### Advanced Usage
 
 ```tsx
-import { DataTable } from 'baseui-tanstack-table';
+import { DataTable, type DataTableColumns } from 'baseui-tanstack-table';
 import { createColumnHelper } from '@tanstack/react-table';
+import type { StockFeatures } from '@tanstack/react-table';
 
 // Define your data interface
 interface User {
@@ -102,10 +103,10 @@ interface User {
 }
 
 // Create a column helper for your data type
-const columnHelper = createColumnHelper<User>();
+const columnHelper = createColumnHelper<StockFeatures, User>();
 
 // Define your columns
-const columns = [
+const columns: DataTableColumns<User> = [
   columnHelper.accessor('name', {
     header: 'Name',
     cell: info => info.getValue(),
@@ -178,9 +179,10 @@ bun run build
 bun run build-storybook
 ```
 
-TypeScript remains on the highest version supported by the current Biome and
-declaration-build toolchain. TypeScript 7 is not used until those tools support
-its API.
+The project uses TypeScript 7 and emits declaration files during `bun run build`.
+Use `DataTableColumn<T>`, `DataTableColumns<T>`, and `DataTableSearchField<T>`
+for consumer-facing table configuration. Search fields are checked against the
+row type, so misspelled field names fail during type checking.
 
 ### Code Conventions
 

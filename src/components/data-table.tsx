@@ -1,10 +1,8 @@
 import { rankItem } from '@tanstack/match-sorter-utils'
 import {
-  type ColumnDef,
   type ColumnFiltersState,
   type FilterFn,
   flexRender,
-  type Row,
   type RowData,
   type SortingState,
   type StockFeatures,
@@ -34,6 +32,7 @@ import {
 } from 'baseui/table-semantic'
 import { StyledSortIconContainer } from 'baseui/table-semantic/styled-components'
 import React from 'react'
+import type { DataTableColumns, DataTableSearchField } from '../types'
 
 const StyledTableHeadCellSortableNew = withStyle(StyledTableHeadCellSortable, ({ $theme }) => ({
   position: 'relative',
@@ -41,9 +40,13 @@ const StyledTableHeadCellSortableNew = withStyle(StyledTableHeadCellSortable, ({
 }))
 
 // Define the default fuzzy filter function for individual columns
-// biome-ignore lint/suspicious/noExplicitAny: The reusable filter accepts heterogeneous cell values.
-export const fuzzyFilter: FilterFn<StockFeatures, any> = (row, columnId, value, addMeta) => {
-  const itemRank = rankItem(String(row.getValue(columnId) || ''), value)
+export const fuzzyFilter: FilterFn<StockFeatures, RowData> = (
+  row,
+  columnId,
+  value: unknown,
+  addMeta,
+) => {
+  const itemRank = rankItem(String(row.getValue(columnId) ?? ''), String(value ?? ''))
   addMeta?.({ itemRank })
   return itemRank.passed
 }
@@ -51,13 +54,12 @@ export const fuzzyFilter: FilterFn<StockFeatures, any> = (row, columnId, value, 
 // Define the props for the DataTable component
 export interface DataTableProps<T extends RowData> {
   data: T[] // Array of data objects
-  // biome-ignore lint/suspicious/noExplicitAny: TanStack column values are intentionally heterogeneous.
-  columns: ColumnDef<StockFeatures, T, any>[] // Array of column definitions
+  columns: DataTableColumns<T> // Array of column definitions
   isLoading?: boolean // Optional loading state
   emptyMessage?: string // Optional message when no data is available
   initialSorting?: SortingState // Optional initial sorting state
   searchPlaceholder?: string // Optional placeholder for the search input
-  searchFields?: string[] // Optional array of fields to search
+  searchFields?: readonly DataTableSearchField<T>[] // Optional array of fields to search
   showSearchBar?: boolean // Optional flag to show/hide the search bar
   // Pagination props
   pagination?: {
@@ -76,7 +78,7 @@ export function DataTable<T extends RowData>({
   emptyMessage = 'No data available',
   initialSorting = [],
   searchPlaceholder = 'Search...',
-  searchFields = ['firstName', 'lastName'],
+  searchFields,
   showSearchBar = true,
   pagination,
 }: DataTableProps<T>) {
@@ -86,11 +88,16 @@ export function DataTable<T extends RowData>({
   const [globalFilter, setGlobalFilter] = React.useState('')
 
   // Create a fuzzy filter function that searches multiple fields
-  const customGlobalFilterFn = React.useCallback(
-    (row: Row<StockFeatures, T>, _columnId: string, filterValue: string) => {
-      const searchTerm = filterValue.toLowerCase()
+  const customGlobalFilterFn = React.useCallback<FilterFn<StockFeatures, T>>(
+    (row, columnId, filterValue: unknown) => {
+      const searchTerm = String(filterValue ?? '').toLowerCase()
+      if (!searchFields) {
+        const value = String(row.getValue(columnId) ?? '').toLowerCase()
+        return rankItem(value, searchTerm).passed
+      }
+
       return searchFields.some((field) => {
-        const value = String(row.getValue(field) || '').toLowerCase()
+        const value = String(row.getValue(field) ?? '').toLowerCase()
         return rankItem(value, searchTerm).passed
       })
     },
