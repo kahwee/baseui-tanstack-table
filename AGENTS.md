@@ -11,7 +11,15 @@
 - TypeCheck: `bun run typecheck`
 - Lint: `bun run lint`
 - Lint & Fix: `bun run lint:fix`
+- Full check: `bun run check`
 - Tests: Make sure to use `fn()` from `storybook/test` for event handlers in stories
+
+## Greenkeeping
+- Start dependency maintenance with `bun outdated` and `bun audit`.
+- Prefer focused compatible upgrades and commit `bun.lock` with `package.json`.
+- Keep the Bun version in `package.json` and workflows aligned.
+- Isolate major React, BaseUI, TanStack Table, Vite, or Storybook upgrades and
+  run `bun run check` plus `bun run build-storybook` before committing.
 
 ## Code Style Guidelines
 - TypeScript: Use strict typing with proper interfaces/types
