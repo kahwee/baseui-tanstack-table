@@ -1,5 +1,4 @@
 import type { StorybookConfig } from '@storybook/react-vite'
-import viteFinal from './vite.config.ts'
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
@@ -11,7 +10,6 @@ const config: StorybookConfig = {
   typescript: {
     reactDocgen: 'react-docgen-typescript',
   },
-  viteFinal,
 }
 
 export default config
