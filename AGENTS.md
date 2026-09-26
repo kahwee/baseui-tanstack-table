@@ -10,6 +10,13 @@ TanStack Table. The README describes the consumer API; stories show UI states.
 - Use Bun and commit `bun.lock` with dependency changes. Keep its declared
   version aligned with CI.
 - Run `bun run check` for source or dependency changes. Build Storybook with
-  `bun run build-storybook` when changing stories. Docs-only changes need a diff
+  `bun run build-storybook` when changing stories, configuration, or Storybook/Vite
+  dependencies. Docs-only changes need a diff
   and link check.
 - Use `fn()` from `storybook/test` for story event handlers.
+- Check `bun outdated` and `bun audit` before greenkeeping. Upgrade Vitest and its
+  coverage/UI packages together; keep Storybook addons on the same stable version.
+- Compile README examples against the public exports. Column helpers use TanStack
+  Table v9's `createColumnHelper<StockFeatures, Row>()` signature. With external
+  pagination, the caller fetches pages and the built-in search bar is hidden.
+- Record prepared version bumps in `CHANGELOG.md`; do not imply they are published.

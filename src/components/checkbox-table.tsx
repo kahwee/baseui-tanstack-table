@@ -1,13 +1,9 @@
-import { rankItem } from '@tanstack/match-sorter-utils'
 import {
   type ColumnFiltersState,
-  type FilterFn,
   flexRender,
   type RowData,
   type RowSelectionState,
   type SortingState,
-  type StockFeatures,
-  stockFeatures,
   useTable,
 } from '@tanstack/react-table'
 import { withStyle } from 'baseui'
@@ -33,6 +29,8 @@ import {
 import { StyledSortIconContainer } from 'baseui/table-semantic/styled-components'
 import React from 'react'
 import type { DataTableColumn, DataTableColumns, DataTableSearchField } from '../types'
+import { createGlobalFilter } from '../utils/global-filter'
+import { dataTableFeatures } from '../utils/table-features'
 
 const StyledTableHeadCellSortableNew = withStyle(StyledTableHeadCellSortable, ({ $theme }) => ({
   position: 'relative',
@@ -74,20 +72,8 @@ export function CheckboxTable<T extends RowData>({
   const [globalFilter, setGlobalFilter] = React.useState('')
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>(initialRowSelection)
 
-  // Create a fuzzy filter function that searches multiple fields
-  const customGlobalFilterFn = React.useCallback<FilterFn<StockFeatures, T>>(
-    (row, columnId, filterValue: unknown) => {
-      const searchTerm = String(filterValue ?? '').toLowerCase()
-      if (!searchFields) {
-        const value = String(row.getValue(columnId) ?? '').toLowerCase()
-        return rankItem(value, searchTerm).passed
-      }
-
-      return searchFields.some((field) => {
-        const value = String(row.getValue(field) ?? '').toLowerCase()
-        return rankItem(value, searchTerm).passed
-      })
-    },
+  const customGlobalFilterFn = React.useMemo(
+    () => createGlobalFilter<T>(searchFields),
     [searchFields],
   )
 
@@ -125,7 +111,7 @@ export function CheckboxTable<T extends RowData>({
 
   // Initialize the table instance using useTable hook
   const table = useTable({
-    features: stockFeatures,
+    features: dataTableFeatures,
     data,
     columns: allColumns,
     state: { sorting, columnFilters, globalFilter, rowSelection },

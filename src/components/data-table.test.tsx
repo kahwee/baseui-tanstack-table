@@ -1,9 +1,10 @@
 import { createColumnHelper, type StockFeatures } from '@tanstack/react-table'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { BaseProvider, LightTheme } from 'baseui'
 import { Client as Styletron } from 'styletron-engine-atomic'
 import { Provider as StyletronProvider } from 'styletron-react'
 import { describe, expect, it } from 'vitest'
+import { CheckboxTable } from './checkbox-table'
 import { DataTable } from './data-table'
 
 // Create a wrapper component with necessary providers
@@ -115,5 +116,51 @@ describe('DataTable', () => {
     )
 
     expect(screen.queryByPlaceholderText('Search users...')).not.toBeInTheDocument()
+  })
+
+  it('searches typed data fields without requiring a matching column', async () => {
+    const records = [
+      { firstName: 'John', lastName: 'Doe', age: 30, details: { city: 'Seattle' } },
+      { firstName: 'Jane', lastName: 'Smith', age: 25, details: { city: 'Portland' } },
+    ]
+    const recordColumn = createColumnHelper<StockFeatures, (typeof records)[number]>()
+    const columns = [recordColumn.accessor('firstName', { header: 'First Name' })]
+    render(
+      <Wrapper>
+        <DataTable data={records} columns={columns} searchFields={['details.city']} />
+      </Wrapper>,
+    )
+
+    fireEvent.change(screen.getByPlaceholderText('Search...'), { target: { value: 'Portland' } })
+
+    expect(screen.getByText('Jane')).toBeInTheDocument()
+    await waitFor(() => expect(screen.queryByText('John')).not.toBeInTheDocument())
+  })
+
+  it('sorts rows when a column header is clicked', () => {
+    render(
+      <Wrapper>
+        <DataTable data={testData} columns={testColumns} />
+      </Wrapper>,
+    )
+
+    fireEvent.click(screen.getByText('First Name'))
+    expect(screen.getAllByRole('row')[1]).toHaveTextContent('Jane')
+  })
+})
+
+describe('CheckboxTable', () => {
+  it('filters rows while keeping the selection column', () => {
+    render(
+      <Wrapper>
+        <CheckboxTable data={testData} columns={testColumns} searchFields={['lastName']} />
+      </Wrapper>,
+    )
+
+    fireEvent.change(screen.getByPlaceholderText('Search...'), { target: { value: 'Smith' } })
+
+    expect(screen.getByText('Jane')).toBeInTheDocument()
+    expect(screen.queryByText('John')).not.toBeInTheDocument()
+    expect(screen.getByRole('checkbox', { name: 'Select row 1' })).toBeInTheDocument()
   })
 })

@@ -50,6 +50,47 @@ export function Example() {
 Use `DataTableColumn<T>`, `DataTableColumns<T>`, and
 `DataTableSearchField<T>` for typed columns and search fields. The
 `CheckboxTable` stories show controlled selection and pagination.
+Search fields can use nested data paths and do not need a visible column.
+
+## Your own data
+
+Define columns with the TanStack Table v9 helper, then render them inside the
+providers from the example above:
+
+```tsx
+import { createColumnHelper, type StockFeatures } from '@tanstack/react-table';
+import { DataTable, type DataTableColumns } from 'baseui-data-table';
+
+type Book = { title: string; author: string; year: number };
+const column = createColumnHelper<StockFeatures, Book>();
+const columns: DataTableColumns<Book> = [
+  column.accessor('title', { header: 'Title' }),
+  column.accessor('author', { header: 'Author' }),
+  column.accessor('year', { header: 'Year' }),
+];
+const books: Book[] = [
+  { title: 'A Wizard of Earthsea', author: 'Ursula K. Le Guin', year: 1968 },
+  { title: 'Kindred', author: 'Octavia E. Butler', year: 1979 },
+];
+
+export function BooksTable() {
+  return (
+    <DataTable
+      data={books}
+      columns={columns}
+      searchFields={['title', 'author']}
+      searchPlaceholder="Search books"
+      emptyMessage="No books found"
+    />
+  );
+}
+```
+
+Use `isLoading` while fetching data. For external pagination, pass `pagination`
+with `currentPage`, `pageSize`, `totalPages`, and `onPageChange({ nextPage })`.
+The caller supplies each page of data; the built-in search bar is hidden in this
+mode. See the [pagination stories](src/components/data-table.stories.tsx) for a
+complete example.
 
 ## Develop
 
@@ -60,6 +101,7 @@ bun run storybook
 ```
 
 `bun run check` covers formatting, lint, types, tests, and the library build.
-Run `bun run build-storybook` when editing stories.
+Run `bun run build-storybook` when editing stories, configuration, or their
+dependencies. Use the Bun version pinned in `package.json` and CI.
 
 ISC license.

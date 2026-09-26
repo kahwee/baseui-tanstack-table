@@ -6,7 +6,6 @@ import {
   type RowData,
   type SortingState,
   type StockFeatures,
-  stockFeatures,
   useTable,
 } from '@tanstack/react-table'
 import { withStyle } from 'baseui'
@@ -33,6 +32,8 @@ import {
 import { StyledSortIconContainer } from 'baseui/table-semantic/styled-components'
 import React from 'react'
 import type { DataTableColumns, DataTableSearchField } from '../types'
+import { createGlobalFilter } from '../utils/global-filter'
+import { dataTableFeatures } from '../utils/table-features'
 
 const StyledTableHeadCellSortableNew = withStyle(StyledTableHeadCellSortable, ({ $theme }) => ({
   position: 'relative',
@@ -87,26 +88,14 @@ export function DataTable<T extends RowData>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [globalFilter, setGlobalFilter] = React.useState('')
 
-  // Create a fuzzy filter function that searches multiple fields
-  const customGlobalFilterFn = React.useCallback<FilterFn<StockFeatures, T>>(
-    (row, columnId, filterValue: unknown) => {
-      const searchTerm = String(filterValue ?? '').toLowerCase()
-      if (!searchFields) {
-        const value = String(row.getValue(columnId) ?? '').toLowerCase()
-        return rankItem(value, searchTerm).passed
-      }
-
-      return searchFields.some((field) => {
-        const value = String(row.getValue(field) ?? '').toLowerCase()
-        return rankItem(value, searchTerm).passed
-      })
-    },
+  const customGlobalFilterFn = React.useMemo(
+    () => createGlobalFilter<T>(searchFields),
     [searchFields],
   )
 
   // Initialize table instance using v9 useTable hook
   const table = useTable({
-    features: stockFeatures,
+    features: dataTableFeatures,
     data,
     columns,
     state: { sorting, columnFilters, globalFilter },
