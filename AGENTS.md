@@ -11,8 +11,7 @@ TanStack Table. The README describes the consumer API; stories show UI states.
   version aligned with CI.
 - Run `bun run check` for source or dependency changes. Build Storybook with
   `bun run build-storybook` when changing stories, configuration, or Storybook/Vite
-  dependencies. Docs-only changes need a diff
-  and link check.
+  dependencies. Docs-only changes need diff and link checks.
 - Use `fn()` from `storybook/test` for story event handlers.
 - Check `bun outdated` and `bun audit` before greenkeeping. Upgrade Vitest and its
   coverage/UI packages together; keep Storybook addons on the same stable version.
