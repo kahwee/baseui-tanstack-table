@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3 (unreleased)
+
+- Refresh compatible dependencies and GitHub Actions; update Storybook to 10.6.1.
+
 ## 1.0.2 (unreleased)
 
 - Refresh Vite to 8.3.1, Vitest/coverage/UI to 5.0.2, and Node types to 26.6.3.
