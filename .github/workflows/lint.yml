@@ -30,6 +30,6 @@ jobs:
         
       - name: Run tests
         run: bun run test:run
-        
+
       - name: Build with Vite
         run: bun run build
