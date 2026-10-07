@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.4 (unreleased)
+
+- Update compatible development tooling and refresh dependency security fixes.
+
 ## 1.0.3 (unreleased)
 
 - Refresh compatible dependencies and GitHub Actions; update Storybook to 10.6.1.

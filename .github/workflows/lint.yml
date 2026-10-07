@@ -1,4 +1,4 @@
-name: Lint and Build
+name: Check and Build
 
 on:
   push:
@@ -6,9 +6,17 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint-and-build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     
     steps:
       - name: Checkout code
@@ -19,15 +27,23 @@ jobs:
         with:
           bun-version: 1.4.2
           
+      - name: Cache Bun packages
+        uses: actions/cache@v6.1.0
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-1.4.2-${{ hashFiles('bun.lock') }}
+
       - name: Install dependencies
         run: bun install --frozen-lockfile
         
-      # Lint and no-emit type checking do not depend on one another.
+      # Source checks run independently before the package build.
       - parallel:
           - name: Run Biome lint
-            run: bun run lint
+            run: bun run format:check && bun run lint
 
           - name: TypeScript Check
             run: bun run typecheck
+          - name: Unit tests
+            run: bun run test:run
       - name: Build with Vite
         run: bun run build
