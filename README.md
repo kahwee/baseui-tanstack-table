@@ -68,3 +68,7 @@ Run `bun run build-storybook` when editing stories, configuration, or their
 dependencies. Use the Bun version pinned in `package.json` and CI.
 
 ISC license.
+
+## CI maintenance
+
+[GitHub Actions maintenance](.github/ACTIONS.md) covers workflows, parallel checks, action versions, and weekly updates.
