@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.5 (unreleased)
+
+- Update TanStack Table to 9.3.1 and matching search utilities to 9.2.6.
+- Refresh Storybook and its addons to 10.6.2, Vitest/coverage/UI to 5.0.4, Vite to 8.3.4, and Node types to 26.6.5.
+
 ## 1.0.4 (unreleased)
 
 - Update compatible development tooling and refresh dependency security fixes.
