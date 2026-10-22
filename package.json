@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsc -p tsconfig.build.json",
+    "build": "bun run typecheck && bun run build:artifacts",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
@@ -26,7 +26,9 @@
     "format": "bun fmt .",
     "format:check": "bun fmt --check .",
     "typecheck": "bun --check --tsconfig-override=tsconfig.json",
-    "check": "bun run format:check && bun run typecheck && bun run test:run && bun run build"
+    "check": "bun run check:source && bun run build:artifacts",
+    "check:source": "bun run --parallel format:check typecheck test:run",
+    "build:artifacts": "vite build && tsc --noCheck -p tsconfig.build.json"
   },
   "repository": {
     "type": "git",

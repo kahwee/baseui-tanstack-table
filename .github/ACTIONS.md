@@ -15,7 +15,7 @@ This guide describes the checked-in workflows. Follow each linked YAML file for 
 
 Independent checks use GitHub Actions [native parallel steps](https://github.blog/changelog/2026-06-25-actions-steps-can-now-be-run-in-parallel/). The following groups run concurrently within a job:
 
-- [lint.yml](workflows/lint.yml), job `lint-and-build`: `Check formatting`; `TypeScript Check`; `Unit tests`.
+- [lint.yml](workflows/lint.yml), job `lint-and-build`: `Check formatting`; `Bun check`; `Unit tests`.
 
 Steps after a group wait for it to finish. Keep prerequisites before the group and dependent build, package, or deployment work afterward. Do not run commands that overwrite the same build directory or coverage output together. Parallel steps share the job workspace; they do not provide separate machines.
 
@@ -56,3 +56,12 @@ Retain tests, declaration generation, package validation, and audit gates.
 
 Frozen dependency installation uses `bun ci`. Vitest and declaration emitters
 remain where they provide existing coverage and published package artifacts.
+
+## Check and build order
+
+Local `check:source` uses Bun’s parallel script runner for formatting, project
+checking, and tests. GitHub keeps these as independent parallel steps so failures
+remain visible. Builds and package checks wait for the source checks.
+Standalone `build` runs Bun checking first. After an explicit successful checker,
+CI uses `build:artifacts`; its TypeScript step emits declarations with `--noCheck`
+and does not provide a second semantic check.
