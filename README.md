@@ -63,7 +63,7 @@ bun run check
 bun run storybook
 ```
 
-`bun run check` covers formatting, lint, types, tests, and the library build.
+`bun run check` covers formatting, types, tests, and the library build.
 Run `bun run build-storybook` when editing stories, configuration, or their
 dependencies. Use the Bun version pinned in `package.json` and CI.
 
@@ -72,3 +72,8 @@ ISC license.
 ## CI maintenance
 
 [GitHub Actions maintenance](.github/ACTIONS.md) covers workflows, parallel checks, action versions, and weekly updates.
+
+Bun 1.4.4 owns formatting (`bun run format`, `bun run format:check`) and type checking
+(`bun run typecheck`). Biome has been removed. Bun formatting is not a replacement
+for Biome’s semantic lint rules; tests, strict type checks, and package builds remain
+the verification gates. TypeScript remains installed for declaration generation.

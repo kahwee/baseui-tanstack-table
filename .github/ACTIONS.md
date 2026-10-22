@@ -4,34 +4,36 @@ This guide describes the checked-in workflows. Follow each linked YAML file for 
 
 ## Workflows
 
-| Workflow | Events | Jobs |
-| --- | --- | --- |
-| [dependabot-auto-merge.yml](workflows/dependabot-auto-merge.yml) | `pull_request` | `dependabot` |
-| [deploy-storybook.yml](workflows/deploy-storybook.yml) | `push`, `workflow_dispatch` | `build`, `deploy` |
-| [lint.yml](workflows/lint.yml) | `push`, `pull_request` | `lint-and-build` |
-| [storybook.yml](workflows/storybook.yml) | `push`, `pull_request` | `build` |
+| Workflow                                                         | Events                      | Jobs              |
+| ---------------------------------------------------------------- | --------------------------- | ----------------- |
+| [dependabot-auto-merge.yml](workflows/dependabot-auto-merge.yml) | `pull_request`              | `dependabot`      |
+| [deploy-storybook.yml](workflows/deploy-storybook.yml)           | `push`, `workflow_dispatch` | `build`, `deploy` |
+| [lint.yml](workflows/lint.yml)                                   | `push`, `pull_request`      | `lint-and-build`  |
+| [storybook.yml](workflows/storybook.yml)                         | `push`, `pull_request`      | `build`           |
 
 ## Parallel steps
 
 Independent checks use GitHub Actions [native parallel steps](https://github.blog/changelog/2026-06-25-actions-steps-can-now-be-run-in-parallel/). The following groups run concurrently within a job:
 
-- [lint.yml](workflows/lint.yml), job `lint-and-build`: `Run Biome lint`; `TypeScript Check`; `Unit tests`.
+- [lint.yml](workflows/lint.yml), job `lint-and-build`: `Check formatting`; `TypeScript Check`; `Unit tests`.
 
 Steps after a group wait for it to finish. Keep prerequisites before the group and dependent build, package, or deployment work afterward. Do not run commands that overwrite the same build directory or coverage output together. Parallel steps share the job workspace; they do not provide separate machines.
 
 ## Action versions
 
-Versions below match the current workflow and composite-action references. SHA-pinned actions remain pinned; compare their commit with the upstream stable release when updating.
+Verified against upstream stable releases on 2026-10-22. Workflow, composite-action,
+and release-proposal references use immutable commit pins with version comments.
 
-| Action | Reference |
-| --- | --- |
-| [actions/cache](https://github.com/actions/cache) | `v6.1.0` |
-| [actions/checkout](https://github.com/actions/checkout) | `v7.0.1` |
-| [actions/configure-pages](https://github.com/actions/configure-pages) | `v6.0.0` |
-| [actions/deploy-pages](https://github.com/actions/deploy-pages) | `v5.0.1` |
-| [actions/upload-pages-artifact](https://github.com/actions/upload-pages-artifact) | `v5.0.0` |
-| [dependabot/fetch-metadata](https://github.com/dependabot/fetch-metadata) | `v3.1.0` |
-| [oven-sh/setup-bun](https://github.com/oven-sh/setup-bun) | `v2.2.0` |
+| Action                                                                            | Stable release | Commit                                     |
+| --------------------------------------------------------------------------------- | -------------- | ------------------------------------------ |
+| [actions/cache](https://github.com/actions/cache)                                 | `v6.1.0`       | `55cc8345863c7cc4c66a329aec7e433d2d1c52a9` |
+| [actions/checkout](https://github.com/actions/checkout)                           | `v7.0.1`       | `3d3c42e5aac5ba805825da76410c181273ba90b1` |
+| [actions/configure-pages](https://github.com/actions/configure-pages)             | `v6.0.0`       | `45bfe0192ca1faeb007ade9deae92b16b8254a0d` |
+| [actions/deploy-pages](https://github.com/actions/deploy-pages)                   | `v5.0.1`       | `368f82528645a54fb793d4d04e342629a3f51346` |
+| [actions/setup-node](https://github.com/actions/setup-node)                       | `v7.1.0`       | `949feb2413d6458794dcd2491c4babbbce0c15c1` |
+| [actions/upload-pages-artifact](https://github.com/actions/upload-pages-artifact) | `v5.0.0`       | `fc324d3547104276b827a68afc52ff2a11cc49c9` |
+| [dependabot/fetch-metadata](https://github.com/dependabot/fetch-metadata)         | `v3.1.0`       | `25dd0e34f4fe68f24cc83900b1fe3fe149efef98` |
+| [oven-sh/setup-bun](https://github.com/oven-sh/setup-bun)                         | `v2.2.0`       | `0c5077e51419868618aeaa5fe8019c62421857d6` |
 
 ## Greenkeeping
 
@@ -44,3 +46,13 @@ Versions below match the current workflow and composite-action references. SHA-p
 5. Refresh this guide when workflows, action references, or parallel groups change.
 
 Use workflow concurrency to cancel superseded check runs where appropriate. Deployment and release cancellation have different consequences: preserve the workflow’s existing policy rather than copying check-run settings blindly. Repository permissions and job-level overrides are defined in the linked YAML files.
+
+## Bun tooling
+
+Bun 1.4.4 provides native formatting and type checking. CI runs
+`bun run format:check` and `bun run typecheck`; Biome is no longer installed.
+Semantic lint rules previously supplied by Biome are not part of Bun formatting.
+Retain tests, declaration generation, package validation, and audit gates.
+
+Frozen dependency installation uses `bun ci`. Vitest and declaration emitters
+remain where they provide existing coverage and published package artifacts.

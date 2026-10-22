@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Use Bun 1.4.4 for formatting and type checking; remove Biome. Keep TypeScript for declaration output.
+- Pin GitHub Actions to verified stable release commits and use `bun ci` for frozen installs.
+
 ## 1.0.5 (unreleased)
 
 - Update TanStack Table to 9.3.1 and matching search utilities to 9.2.6.

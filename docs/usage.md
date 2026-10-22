@@ -41,4 +41,3 @@ with `currentPage`, `pageSize`, `totalPages`, and `onPageChange({ nextPage })`.
 The caller supplies each page of data; the built-in search bar is hidden in this
 mode. See the [pagination stories](../src/components/data-table.stories.tsx) for a
 complete example.
-
