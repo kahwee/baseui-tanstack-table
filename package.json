@@ -1,6 +1,6 @@
 {
   "name": "baseui-data-table",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A data table component for BaseUI using TanStack Table",
   "type": "module",
   "packageManager": "bun@1.4.4",
@@ -28,7 +28,7 @@
     "typecheck": "bun --check --tsconfig-override=tsconfig.json",
     "check": "bun run check:source && bun run build:artifacts",
     "check:source": "bun run --parallel format:check typecheck test:run",
-    "build:artifacts": "vite build && tsc --noCheck -p tsconfig.build.json"
+    "build:artifacts": "bun --bun vite build && bun --bun tsc --noCheck -p tsconfig.build.json"
   },
   "repository": {
     "type": "git",
@@ -51,30 +51,30 @@
     "@tanstack/match-sorter-utils": "^9.2.6",
     "@tanstack/react-table": "^9.3.1",
     "baseui": "^18.2.0",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "styletron-engine-atomic": "^1.6.2",
     "styletron-react": "^6.1.1"
   },
   "devDependencies": {
-    "@storybook/addon-docs": "^10.6.2",
-    "@storybook/react-vite": "^10.6.2",
+    "@storybook/addon-docs": "^10.6.3",
+    "@storybook/react-vite": "^10.6.3",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
-    "@testing-library/user-event": "^14.6.7",
+    "@testing-library/user-event": "^14.6.8",
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
-    "@vitest/coverage-v8": "^5.0.4",
-    "@vitest/ui": "^5.0.4",
+    "@vitest/coverage-v8": "^5.0.5",
+    "@vitest/ui": "^5.0.5",
     "jiti": "^2.7.0",
-    "jsdom": "^30.1.2",
-    "storybook": "^10.6.2",
+    "jsdom": "^30.1.3",
+    "storybook": "^10.6.3",
     "typescript": "7.0.2",
-    "vite": "^8.3.4",
-    "vitest": "^5.0.4"
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
   },
   "overrides": {
     "@types/react": "$@types/react",

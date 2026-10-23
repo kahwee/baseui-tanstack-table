@@ -1,0 +1,67 @@
+{
+  "repo": "baseui-tanstack-table",
+  "base_commit": "7af976635484154d14f1b59bcee1a8db29f3dd19",
+  "bun": "1.4.4",
+  "node": "v26.11.1",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "scope": "Artifact build only; both cases use the same updated dependencies; declarations included; installed and OS caches warm",
+  "samples": [
+    {
+      "round": 1,
+      "case": "bun_hosted",
+      "seconds": 3.7284,
+      "output_sha256": "3399523d757ba9dd60c1d406f1c0b4333bef250a1ffa349836ebeabf6ce6e828",
+      "matches_reference": true,
+      "files": 16
+    },
+    {
+      "round": 1,
+      "case": "normal",
+      "seconds": 4.1803,
+      "output_sha256": "3399523d757ba9dd60c1d406f1c0b4333bef250a1ffa349836ebeabf6ce6e828",
+      "matches_reference": true,
+      "files": 16
+    },
+    {
+      "round": 2,
+      "case": "normal",
+      "seconds": 3.3021,
+      "output_sha256": "3399523d757ba9dd60c1d406f1c0b4333bef250a1ffa349836ebeabf6ce6e828",
+      "matches_reference": true,
+      "files": 16
+    },
+    {
+      "round": 2,
+      "case": "bun_hosted",
+      "seconds": 2.477,
+      "output_sha256": "3399523d757ba9dd60c1d406f1c0b4333bef250a1ffa349836ebeabf6ce6e828",
+      "matches_reference": true,
+      "files": 16
+    },
+    {
+      "round": 3,
+      "case": "bun_hosted",
+      "seconds": 3.5644,
+      "output_sha256": "3399523d757ba9dd60c1d406f1c0b4333bef250a1ffa349836ebeabf6ce6e828",
+      "matches_reference": true,
+      "files": 16
+    },
+    {
+      "round": 3,
+      "case": "normal",
+      "seconds": 8.4185,
+      "output_sha256": "3399523d757ba9dd60c1d406f1c0b4333bef250a1ffa349836ebeabf6ce6e828",
+      "matches_reference": true,
+      "files": 16
+    }
+  ],
+  "median_seconds": {
+    "normal": 4.1803,
+    "bun_hosted": 3.5644
+  },
+  "working_tree_modified": true,
+  "baseline_command": "bun run build:artifacts",
+  "candidate_command": "bun --bun run build:artifacts",
+  "measurement_date": "2026-10-22",
+  "note": "Commands reference the baseline script before adding explicit Bun-hosted tool invocations. Runtime comparison used identical updated dependencies in both cases."
+}
