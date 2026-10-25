@@ -137,6 +137,25 @@ describe('DataTable', () => {
     await waitFor(() => expect(screen.queryByText('John')).not.toBeInTheDocument())
   })
 
+  it.each([{ searchFields: undefined }, { searchFields: ['firstName'] as const }])(
+    'ignores surrounding search whitespace with $searchFields',
+    ({ searchFields }) => {
+      render(
+        <Wrapper>
+          <DataTable data={testData} columns={testColumns} searchFields={searchFields} />
+        </Wrapper>,
+      )
+
+      fireEvent.change(screen.getByPlaceholderText('Search...'), { target: { value: '  Jane  ' } })
+      expect(screen.getByText('Jane')).toBeInTheDocument()
+      expect(screen.queryByText('John')).not.toBeInTheDocument()
+
+      fireEvent.change(screen.getByPlaceholderText('Search...'), { target: { value: '   ' } })
+      expect(screen.getByText('John')).toBeInTheDocument()
+      expect(screen.getByText('Jane')).toBeInTheDocument()
+    },
+  )
+
   it('sorts rows when a column header is clicked', () => {
     render(
       <Wrapper>

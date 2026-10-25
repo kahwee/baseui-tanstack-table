@@ -13,7 +13,7 @@ export function createGlobalFilter<T extends RowData>(
   searchFields?: readonly DataTableSearchField<T>[],
 ): FilterFn<StockFeatures, T> {
   return (row, columnId, filterValue: unknown) => {
-    const query = String(filterValue ?? '')
+    const query = String(filterValue ?? '').trim()
     if (!searchFields?.length) {
       return rankItem(String(row.getValue(columnId) ?? ''), query).passed
     }
