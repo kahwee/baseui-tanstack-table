@@ -31,3 +31,22 @@ checker improvements to claim a multiplied whole-build gain.
 
 The existing Vite library build retains ESM and UMD output. Bun hosts Vite;
 Bun’s bundler does not replace Vite’s UMD generation.
+
+## Source checks and declaration generation
+
+Bun 1.4.4 owns formatting (`bun run format`, `bun run format:check`) and type checking
+(`bun run typecheck`). Biome has been removed. Bun formatting is not a replacement
+for Biome’s semantic lint rules; tests, strict type checks, and package builds remain
+the verification gates. TypeScript remains installed for declaration generation.
+
+`bun run check:source` runs formatting, Bun type checking, and tests in parallel.
+`bun run check` waits for those checks before building package artifacts.
+`bun run build` checks types before building. CI calls `build:artifacts` only after
+a successful Bun check; TypeScript emits declarations with `--noCheck` to avoid
+checking the same source again. Do not use `build:artifacts` as a validation command.
+
+On the session’s Linux executor, the median of three project-check runs was
+0.360s with Bun versus 1.547s with `bun x --no-install tsc --noEmit`.
+These include command startup and describe this checkout, not a CI speed guarantee.
+Declaration emission measured 1.116s with `--noCheck` versus
+1.144s with checking; generated `.d.ts` contents matched.

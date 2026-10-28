@@ -1,11 +1,47 @@
 # Table data and pagination
 
-Start with the [provider setup](../README.md#use).
+## Providers
+
+```tsx
+import { BaseProvider, LightTheme } from 'baseui';
+import { Client as Styletron } from 'styletron-engine-atomic';
+import { Provider as StyletronProvider } from 'styletron-react';
+import {
+  DataTable,
+  samplePersonColumns,
+  samplePersonData,
+} from 'baseui-data-table';
+
+const engine = new Styletron();
+
+export function Example() {
+  return (
+    <StyletronProvider value={engine}>
+      <BaseProvider theme={LightTheme}>
+        <DataTable
+          data={samplePersonData}
+          columns={samplePersonColumns}
+          showSearchBar
+          searchFields={['firstName', 'lastName']}
+        />
+      </BaseProvider>
+    </StyletronProvider>
+  );
+}
+```
+
+Create the Styletron client once for a browser app. For server rendering, use your
+framework’s Styletron SSR setup.
+
+Use `DataTableColumn<T>`, `DataTableColumns<T>`, and `DataTableSearchField<T>`
+for typed columns and search fields. Search fields can address nested data without
+a visible column. `CheckboxTable` adds controlled row selection; see its
+[stories](../src/components/checkbox-table.stories.tsx).
 
 ## Your own data
 
 Define columns with the TanStack Table v9 helper, then render them inside the
-providers from the README:
+providers above:
 
 ```tsx
 import { createColumnHelper, type StockFeatures } from '@tanstack/react-table';
