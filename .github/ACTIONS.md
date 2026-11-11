@@ -4,11 +4,11 @@ This guide describes the checked-in workflows. Follow each linked YAML file for 
 
 ## Workflows
 
-| Workflow                                                         | Events                      | Jobs              |
-| ---------------------------------------------------------------- | --------------------------- | ----------------- |
-| [deploy-storybook.yml](workflows/deploy-storybook.yml)           | `push`, `workflow_dispatch` | `build`, `deploy` |
-| [lint.yml](workflows/lint.yml)                                   | `push`, `pull_request`      | `lint-and-build`  |
-| [storybook.yml](workflows/storybook.yml)                         | `push`, `pull_request`      | `build`           |
+| Workflow                                               | Events                      | Jobs              |
+| ------------------------------------------------------ | --------------------------- | ----------------- |
+| [deploy-storybook.yml](workflows/deploy-storybook.yml) | `push`, `workflow_dispatch` | `build`, `deploy` |
+| [lint.yml](workflows/lint.yml)                         | `push`, `pull_request`      | `lint-and-build`  |
+| [storybook.yml](workflows/storybook.yml)               | `push`, `pull_request`      | `build`           |
 
 ## Parallel steps
 
