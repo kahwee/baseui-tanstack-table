@@ -6,7 +6,6 @@ This guide describes the checked-in workflows. Follow each linked YAML file for 
 
 | Workflow                                                         | Events                      | Jobs              |
 | ---------------------------------------------------------------- | --------------------------- | ----------------- |
-| [dependabot-auto-merge.yml](workflows/dependabot-auto-merge.yml) | `pull_request`              | `dependabot`      |
 | [deploy-storybook.yml](workflows/deploy-storybook.yml)           | `push`, `workflow_dispatch` | `build`, `deploy` |
 | [lint.yml](workflows/lint.yml)                                   | `push`, `pull_request`      | `lint-and-build`  |
 | [storybook.yml](workflows/storybook.yml)                         | `push`, `pull_request`      | `build`           |
@@ -32,10 +31,11 @@ and release-proposal references use immutable commit pins with version comments.
 | [actions/deploy-pages](https://github.com/actions/deploy-pages)                   | `v5.0.1`       | `368f82528645a54fb793d4d04e342629a3f51346` |
 | [actions/setup-node](https://github.com/actions/setup-node)                       | `v7.1.0`       | `949feb2413d6458794dcd2491c4babbbce0c15c1` |
 | [actions/upload-pages-artifact](https://github.com/actions/upload-pages-artifact) | `v5.0.0`       | `fc324d3547104276b827a68afc52ff2a11cc49c9` |
-| [dependabot/fetch-metadata](https://github.com/dependabot/fetch-metadata)         | `v3.1.0`       | `25dd0e34f4fe68f24cc83900b1fe3fe149efef98` |
 | [oven-sh/setup-bun](https://github.com/oven-sh/setup-bun)                         | `v2.2.0`       | `0c5077e51419868618aeaa5fe8019c62421857d6` |
 
 ## Greenkeeping
+
+All dependency updates, including Dependabot patch and minor updates, require maintainer review and manual merging. Passing CI and a semver label do not establish that an upstream change is safe. There is no workflow that approves or merges dependency PRs: changes merged to `main` can publish the public Storybook.
 
 [Dependabot configuration](dependabot.yml) checks GitHub Actions weekly and groups their updates. Review the upstream release notes, runtime requirements, permissions, and changes to inputs or artifact behavior before merging. Update SHA pins to the release commit, retaining the version comment where present.
 
